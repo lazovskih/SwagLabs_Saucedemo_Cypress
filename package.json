@@ -1,0 +1,30 @@
+{
+  "name": "saucedemo_cypress",
+  "version": "1.0.0",
+  "description": "A demo end-to-end test automation project for the [SauceDemo](https://www.saucedemo.com) website — a simple e-commerce application designed specifically for testing practice. The project is built with [Cypress](https://cypress.io/) and TypeScript.",
+  "main": "cypress.config.js",
+  "scripts": {
+    "cy:open": "cypress open",
+    "cy:run": "cypress run",
+    "cy:open:chrome": "npx cypress open --e2e --browser chrome",
+    "cy:open:firefox": "npx cypress open --e2e --browser firefox",
+    "typecheck": "tsc --noEmit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lazovskih/SwagLabs_Saucedemo_Cypress.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/lazovskih/SwagLabs_Saucedemo_Cypress/issues"
+  },
+  "homepage": "https://github.com/lazovskih/SwagLabs_Saucedemo_Cypress#readme",
+  "devDependencies": {
+    "cypress": "^16.1.0",
+    "dotenv": "^17.2.2",
+    "typescript": "^7.0.2"
+  }
+}
