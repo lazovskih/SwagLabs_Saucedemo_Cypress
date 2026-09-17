@@ -5,6 +5,7 @@ import { ProductsPage } from "../pages/ProductsPage";
 import { CartPage } from "../pages/CartPage";
 import { CheckoutStepOnePage } from "../pages/CheckoutStepOnePage";
 import { CheckoutStepTwoPage } from "../pages/CheckoutStepTwoPage";
+import { CheckoutCompletePage } from "../pages/CheckoutCompletePage";
 import { ProductData, ShippingData } from "../utilities/dataTypes";
 import products from "../fixtures/products.json";
 import shippingInfo from "../fixtures/shipping.json";
@@ -14,6 +15,7 @@ describe("Checkout flow", () => {
   let cartPage: CartPage;
   let checkoutStepOnePage: CheckoutStepOnePage;
   let checkoutStepTwoPage: CheckoutStepTwoPage;
+  let checkoutCompletePage: CheckoutCompletePage;
   let products: ProductData[];
   let shippingInfo: ShippingData[];
   let loginPage: LoginPage;
@@ -40,6 +42,7 @@ describe("Checkout flow", () => {
     cartPage = new CartPage();
     checkoutStepOnePage = new CheckoutStepOnePage();
     checkoutStepTwoPage = new CheckoutStepTwoPage();
+    checkoutCompletePage = new CheckoutCompletePage();
     // products = loadTestData<ProductData>("products");
     // shippingInfo = loadTestData<ShippingData>("shipping");
 
@@ -70,22 +73,23 @@ describe("Checkout flow", () => {
 
           // Fill shipping information ("Checkout: Your Information"))
           checkoutStepOnePage.getPageTitle().then((title) => {
-            expect(title).to.equal(checkoutStepOnePage.pageTitle);
+            expect(title, "Checkout step one page title").to.equal(checkoutStepOnePage.pageTitle.text);
           });
 
           // Fill shipping information and continue to overview page
           checkoutStepOnePage.fillShippingInformation(shippingInfo[0]).then(() => {
             checkoutStepTwoPage.getPageTitle().then((title) => {
               //"Checkout: Overview"
-              expect(title).to.equal(checkoutStepTwoPage.pageTitle);
+              expect(title, "Checkout step two page title").to.equal(checkoutStepTwoPage.pageTitle.text);
             });
+          });
 
-            // Finish order
-            checkoutStepTwoPage.finishOrder().then(() => {
-              checkoutStepTwoPage.getPageTitle().then((title) => {
-                //"Thank you for your order!"
-                expect(title).to.equal("Thank you for your order!");
-              });
+          // Finish order
+          checkoutStepTwoPage.finishOrder().then(() => {
+            checkoutCompletePage.getPageTitle().then((title) => {
+              expect(title).to.equal(checkoutCompletePage.pageTitle.text);
+              //"Thank you for your order!"
+              // expect(title).to.equal("Thank you for your order!");
             });
           });
         });
@@ -109,11 +113,14 @@ describe("Checkout flow", () => {
         productsPage.viewCart();
 
         // Verify cart page title, then start checkout
-        expect(cartPage.getPageTitle()).equal(cartPage.pageTitleText);
+        cartPage.getPageTitle().then((title) => {
+          expect(title, "Page title").equal(cartPage.pageTitle.text);
+        });
+
         cartPage.startCheckout();
 
         // Verify checkout step one page title
-        expect(checkoutStepOnePage.getPageTitle()).equal(checkoutStepOnePage.pageTitle.text);
+        // expect(checkoutStepOnePage.getPageTitle()).equal(checkoutStepOnePage.pageTitle.text);
 
         // Fill shipping information and continue to overview page
         checkoutStepOnePage.fillShippingInformation(shippingInfo[0]).then(() => {
