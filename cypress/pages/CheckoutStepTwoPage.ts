@@ -23,7 +23,6 @@ export class CheckoutStepTwoPage extends BasePage {
   constructor() {
     super();
   }
-  // ===== Step Two: Overview =====
 
   /**
    * Get summary subtotal text
@@ -71,8 +70,6 @@ export class CheckoutStepTwoPage extends BasePage {
     cy.get(this.finishButton.locator).click();
   }
 
-  // ===== Step Three: Complete =====
-
   /**
    * Get complete header text
    */
@@ -104,7 +101,7 @@ export class CheckoutStepTwoPage extends BasePage {
   /**
    * Finish the order by clicking the finish button
    */
-  async finishOrder() {
+  finishOrder() {
     cy.get(this.finishButton.locator).click();
   }
 

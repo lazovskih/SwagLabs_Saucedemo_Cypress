@@ -4,7 +4,7 @@ import { ShippingData } from "../utilities/dataTypes";
 export class CheckoutStepOnePage extends BasePage {
   pageUrl = "/checkout-step-one.html";
 
-  // Page locators
+  // Page elements
   pageTitle = { fieldName: "page-title", locator: '[data-test="title"]', text: "Checkout: Your Information" };
   readonly firstNameField = { fieldName: "first-name", locator: '[data-test="firstName"]' };
   readonly lastNameField = { fieldName: "last-name", locator: '[data-test="lastName"]' };
@@ -24,7 +24,7 @@ export class CheckoutStepOnePage extends BasePage {
    * @param lastName
    * @param postalCode
    */
-  async fillShippingInformation(shippingData: ShippingData) {
+  fillShippingInformation(shippingData: ShippingData) {
     cy.get(this.firstNameField.locator).type(shippingData.FirstName);
     cy.get(this.lastNameField.locator).type(shippingData.LastName);
     cy.get(this.postalCodeField.locator).type(shippingData.PostalCode);

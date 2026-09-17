@@ -1,10 +1,12 @@
 import { BasePage } from "./BasePage";
 
 export class CartPage extends BasePage {
-  pageTitleText = "Your Cart";
   pageUrl = "/cart.html";
 
-  // Page locators
+  // Page title element and text
+  pageTitle = { fieldName: "page-title", locator: '[data-test="title"]', text: "Your Cart" };
+
+  // Page elements
   readonly cartItems = { fieldName: "cart-item", locator: ".cart_item" };
   readonly checkoutButton = { fieldName: "checkout-button", locator: '[data-test="checkout"]' };
   readonly continueShoppingButton = { fieldName: "continue-shopping-button", locator: '[data-test="continue-shopping"]' };
@@ -77,31 +79,6 @@ export class CartPage extends BasePage {
     }
   }
 
-  // /**
-  //  * Remove product
-  //  * @param productName
-  //  */
-  // async removeProduct(productName: string) {
-  //   const productId = productName.toLowerCase().replace(/\s+/g, "-");
-  //   cy.get(`[data-test="remove-${productId}"]`).click();
-  // }
-  // /**
-  //  * Click remove button
-  //  * @param productName
-  //  * @returns Promise<Locator>
-  //  */
-  // async clickRemoveButton(productName: string) {
-  //   cy.get(`[data-test="remove-${this.getProductId(productName)}"]`).click();
-  // }
-  // /**
-  //  * Remove product from cart
-  //  * @param productName
-  //  */
-  // async removeProductFromCart(productName: string) {
-  //   this.clickRemoveButton(productName).then(() => {
-  //     console.log(`removeProductFromCart: Product removed from cart: ${productName}`);
-  //   });
-  // }
   /**
    * Continue shopping
    */

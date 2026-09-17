@@ -2,10 +2,12 @@
 import { BasePage } from "./BasePage";
 
 export class LoginPage extends BasePage {
-  readonly pageTitleText = "Swag Labs";
   readonly pageUrl = "/";
 
-  // Page selectors
+  // Page title element and text
+  pageTitle = { fieldName: "page-title", locator: '[data-test="title"]', text: "Swag Labs" };
+
+  // Page elements
   readonly usernameField = { fieldName: "Username", locator: '[data-test="username"]' };
   readonly passwordField = { fieldName: "password", locator: '[data-test="password"]' };
   readonly loginButton = { fieldName: "login-button", locator: '[data-test="login-button"]' };
@@ -18,6 +20,7 @@ export class LoginPage extends BasePage {
   constructor() {
     super();
   }
+
   /**
    * Wait for a page to open and verify that it is ready.
    * @returns
@@ -30,6 +33,7 @@ export class LoginPage extends BasePage {
       cy.visit(env.BASEURL + this.pageUrl);
     });
   }
+
   /**
    * Login with username and password.
    */

@@ -4,7 +4,7 @@ export class ProductsPage extends BasePage {
   pageTitleText = "Products";
   pageUrl = "/inventory.html";
 
-  // Page locators
+  // Page elements
   readonly inventoryItems = { fieldName: "inventory-item", locator: '[data-test="inventory-item"]' };
   readonly cardBageHolder = { fieldName: "shopping-cart-badge", locator: '[data-test="shopping-cart-link"]' };
   readonly cartBadge = { fieldName: "shopping-cart-badge", locator: '[data-test="shopping-cart-badge"]' };
@@ -55,10 +55,8 @@ export class ProductsPage extends BasePage {
    * Add product to cart
    * @param productName
    */
-  async addProductToCart(productName: string) {
-    this.clickAddToCartButton(productName).then(() => {
-      console.log(`addProductToCart: Product added to cart: ${productName}`);
-    });
+  addProductToCart(productName: string) {
+    this.clickAddToCartButton(productName).then(() => {});
   }
 
   /**
@@ -75,10 +73,10 @@ export class ProductsPage extends BasePage {
    * Add multiple products to cart
    * @param productNames
    */
-  async addProductsToCart(productNames: string[]) {
+  addProductsToCart(productNames: string[]) {
     for (const productName of productNames) {
       console.log(`Adding product to cart: ${productName}`);
-      await this.addProductToCart(productName);
+      this.addProductToCart(productName);
     }
   }
 
@@ -105,6 +103,7 @@ export class ProductsPage extends BasePage {
         return text ? Number(text.trim()) : 0;
       });
   }
+
   /**
    * View cart
    */

@@ -45,7 +45,7 @@ export abstract class BasePage {
    * Get page title text
    * @returns Promise<string | null>
    */
-  getPageTitle() {
+  getPageTitle(): Cypress.Chainable<string> {
     return cy.get(this.pageTitle.locator).invoke("text");
   }
 
