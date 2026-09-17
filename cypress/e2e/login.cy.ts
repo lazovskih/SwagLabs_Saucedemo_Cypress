@@ -28,7 +28,6 @@ describe("Login page tests", () => {
       if (typeof USERNAME !== "string" || typeof PASSWORD !== "string") {
         throw new Error("The Cypress username and PASSWORD environment variables must be configured.");
       }
-      // cy.log(`Logging in with username: ${USERNAME} and password: ${PASSWORD}`); // REMOVE
       loginPage.login(USERNAME, PASSWORD);
 
       // Verify Products page is displayed

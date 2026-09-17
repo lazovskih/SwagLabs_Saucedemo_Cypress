@@ -5,7 +5,7 @@ import { ProductsPage } from "../pages/ProductsPage";
 import { CartPage } from "../pages/CartPage";
 import { CheckoutStepOnePage } from "../pages/CheckoutStepOnePage";
 import { CheckoutStepTwoPage } from "../pages/CheckoutStepTwoPage";
-import { ProductData, ShippingData } from "../utilities/dataTypes";
+import { CheckoutCompletePage } from "../pages/CheckoutCompletePage";
 import products from "../fixtures/products.json";
 import shippingInfo from "../fixtures/shipping.json";
 
@@ -14,11 +14,10 @@ describe("Checkout flow", () => {
   let cartPage: CartPage;
   let checkoutStepOnePage: CheckoutStepOnePage;
   let checkoutStepTwoPage: CheckoutStepTwoPage;
-  let products: ProductData[];
-  let shippingInfo: ShippingData[];
+  let checkoutCompletePage: CheckoutCompletePage;
   let loginPage: LoginPage;
 
-  before(() => {
+  beforeEach(() => {
     // Login with valid credentials
     loginPage = new LoginPage();
     productsPage = new ProductsPage();
@@ -28,7 +27,6 @@ describe("Checkout flow", () => {
       if (typeof USERNAME !== "string" || typeof PASSWORD !== "string") {
         throw new Error("The Cypress username and PASSWORD environment variables must be configured.");
       }
-      // cy.log(`Logging in with username: ${USERNAME} and password: ${PASSWORD}`); // REMOVE
       loginPage.login(USERNAME, PASSWORD);
 
       // Verify Products page is displayed
@@ -40,8 +38,7 @@ describe("Checkout flow", () => {
     cartPage = new CartPage();
     checkoutStepOnePage = new CheckoutStepOnePage();
     checkoutStepTwoPage = new CheckoutStepTwoPage();
-    // products = loadTestData<ProductData>("products");
-    // shippingInfo = loadTestData<ShippingData>("shipping");
+    checkoutCompletePage = new CheckoutCompletePage();
 
     // Navigate directly to the products page using the pre-authenticated state
     productsPage.open();
@@ -49,89 +46,100 @@ describe("Checkout flow", () => {
 
   it("Completes checkout for a selected product", () => {
     // Add products to cart
-    cy.fixture("products.json").then((products) => {
-      cy.fixture("shipping.json").then((shippingInfo) => {
-        cy.log("Adding products to cart: " + products[0].Name + ", " + products[1].Name);
+    cy.log("Adding products to cart: " + products[0].Name + ", " + products[1].Name);
 
-        productsPage.addProductsToCart([products[0].Name, products[1].Name]).then(() => {
-          productsPage.getCartCount().then((count) => {
-            expect(count).to.equal(2);
-          });
+    productsPage.addProductsToCart([products[0].Name, products[1].Name]);
+    productsPage.getCartCount().then((count) => {
+      expect(count).to.equal(2);
+    });
 
-          // View cart
-          productsPage.viewCart();
+    // View cart
+    productsPage.viewCart();
 
-          cartPage.getPageTitle().then((title) => {
-            expect(title).to.equal(cartPage.pageTitleText);
-          });
+    cartPage.getPageTitle().then((title) => {
+      expect(title).to.equal(cartPage.pageTitle.text);
 
-          // Start checkout
-          cartPage.startCheckout();
+      // Start checkout
+      cartPage.startCheckout();
 
-          // Fill shipping information ("Checkout: Your Information"))
-          checkoutStepOnePage.getPageTitle().then((title) => {
-            expect(title).to.equal(checkoutStepOnePage.pageTitle);
-          });
+      // Fill shipping information ("Checkout: Your Information"))
+      checkoutStepOnePage.getPageTitle().then((title) => {
+        expect(title, "Checkout step one page title").to.equal(checkoutStepOnePage.pageTitle.text);
+      });
 
-          // Fill shipping information and continue to overview page
-          checkoutStepOnePage.fillShippingInformation(shippingInfo[0]).then(() => {
-            checkoutStepTwoPage.getPageTitle().then((title) => {
-              //"Checkout: Overview"
-              expect(title).to.equal(checkoutStepTwoPage.pageTitle);
-            });
+      // Fill shipping information and continue to overview page
+      checkoutStepOnePage.fillShippingInformation(shippingInfo[0]);
+      checkoutStepTwoPage.getPageTitle().then((title) => {
+        expect(title, "Checkout page two page title").to.equal(checkoutStepTwoPage.pageTitle.text);
+      });
 
-            // Finish order
-            checkoutStepTwoPage.finishOrder().then(() => {
-              checkoutStepTwoPage.getPageTitle().then((title) => {
-                //"Thank you for your order!"
-                expect(title).to.equal("Thank you for your order!");
-              });
-            });
-          });
-        });
+      // Finish order
+      checkoutStepTwoPage.finishOrder();
+      checkoutCompletePage.getPageTitle().then((title) => {
+        expect(title, "Checkout complete page title").equal(checkoutCompletePage.pageTitle.text);
+
+        cy.get(checkoutCompletePage.thankYouMessage.locator)
+          .should("be.visible")
+          .and("have.text", checkoutCompletePage.thankYouMessage.text);
+
+        cy.get(checkoutCompletePage.orderDispatchMessage.locator)
+          .should("be.visible")
+          .and("have.text", checkoutCompletePage.orderDispatchMessage.text);
+
+        cy.get(checkoutCompletePage.backToProductsButton.locator)
+          .should("be.visible")
+          .and("have.text", checkoutCompletePage.backToProductsButton.text);
+
+        cy.get(checkoutCompletePage.generatePDForderButton.locator)
+          .should("be.visible")
+          .and("have.text", checkoutCompletePage.generatePDForderButton.text);
       });
     });
   });
 
   it("Completes checkout and verifies totals for multiple selected products", () => {
-    let expectedSubtotal: String;
-    let expectedTotal: String;
-    cy.fixture("products.json").then((products) => {
-      cy.fixture("shipping.json").then((shippingInfo) => {
-        // Add multiple products to cart
-        productsPage.addProductsToCart([products[1].Name, products[2].Name]).then(() => {
-          productsPage.getCartCount().then((count) => {
-            expect(count).to.equal(2);
-          });
-        });
+    let expectedSubtotal: string;
+    let expectedTotal: string;
 
-        // View cart
-        productsPage.viewCart();
+    // Add multiple products to cart
+    productsPage.addProductsToCart([products[1].Name, products[2].Name]);
+    productsPage.getCartCount().then((count) => {
+      expect(count, "Items count on cart badge").to.equal(2);
 
-        // Verify cart page title, then start checkout
-        expect(cartPage.getPageTitle()).equal(cartPage.pageTitleText);
+      // View cart
+      productsPage.viewCart();
+
+      // Verify cart page title, then start checkout
+      cartPage.getPageTitle().then((title) => {
+        expect(title, "Cart page title").equal(cartPage.pageTitle.text);
+
         cartPage.startCheckout();
 
         // Verify checkout step one page title
-        expect(checkoutStepOnePage.getPageTitle()).equal(checkoutStepOnePage.pageTitle.text);
+        checkoutStepOnePage.getPageTitle().then((title) => {
+          expect(title, "Checkout step one page title").equal(checkoutStepOnePage.pageTitle.text);
 
-        // Fill shipping information and continue to overview page
-        checkoutStepOnePage.fillShippingInformation(shippingInfo[0]).then(() => {
+          // Fill shipping information and continue to overview page
+          checkoutStepOnePage.fillShippingInformation(shippingInfo[0]);
+
           // Verify checkout step two page title
-          expect(checkoutStepTwoPage.getPageTitle()).equal(checkoutStepTwoPage.pageTitle.text);
+          checkoutStepTwoPage.getPageTitle().then((title) => {
+            expect(title, "Checkout step two page title").to.equal(checkoutStepTwoPage.pageTitle.text);
 
-          // Verify subtotal, tax, and total amounts
-          checkoutStepTwoPage.getSubtotal().then((actualSubtotal) => {
-            expectedSubtotal = (products[1].Price + products[2].Price).toFixed(2);
-            expect(actualSubtotal, "Verify subtotal is correct").equal(expectedSubtotal);
-          });
-        });
+            // Verify subtotal, tax, and total amounts
+            checkoutStepTwoPage.getSubtotal().then((actualSubtotal) => {
+              expectedSubtotal = (products[1].Price + products[2].Price).toFixed(2);
+              expect(actualSubtotal, "Verify subtotal is correct").equal(expectedSubtotal);
+            });
 
-        // Calculate expected total based on subtotal and tax, then verify total
-        checkoutStepTwoPage.getTax().then((actualTax) => {
-          expectedTotal = parseFloat(expectedSubtotal + actualTax).toFixed(2);
-          checkoutStepTwoPage.getTotal().then((actualTotal) => {
-            expect(actualTotal, "Verify total is correct").equal(expectedTotal);
+            // Calculate expected total based on subtotal and tax, then verify total
+            checkoutStepTwoPage.getTax().then((actualTaxStr) => {
+              const actualTax = parseFloat(actualTaxStr);
+              expectedTotal = (parseFloat(expectedSubtotal) + actualTax).toFixed(2);
+              checkoutStepTwoPage.getTotal().then((actualTotal) => {
+                expect(actualTotal, "Verify total is correct").equal(expectedTotal);
+              });
+            });
           });
         });
       });
