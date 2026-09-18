@@ -8,6 +8,7 @@
     "cy:run": "cypress run",
     "cy:open:chrome": "npx cypress open --e2e --browser chrome",
     "cy:open:firefox": "npx cypress open --e2e --browser firefox",
+    "cy:open:edge": "npx cypress open --e2e --browser edge",
     "typecheck": "tsc --noEmit"
   },
   "repository": {

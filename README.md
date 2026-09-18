@@ -24,10 +24,10 @@ The tests are written using the **Page Object Model (POM)** pattern for maintain
 
 | Tool                           | Version           |
 | ------------------------------ | ----------------- |
-| [Cypress](https://cypress.io/) | ^1.59.1           |
+| [Cypress](https://cypress.io/) | ^16.1.0           |
 | TypeScript                     | via `@types/node` |
 | Node.js                        | LTS               |
-| dotenv                         | ^17.4.2           |
+| dotenv                         | ^17.2.2           |
 
 ### CI/CD
 
@@ -58,13 +58,7 @@ cd SwagLabs_Saucedemo_Cypress
 npm ci
 ```
 
-### 3. Install Playwright browsers
-
-```bash
-npx cypress install
-```
-
-### 4. Configure environment variables
+### 3. Configure environment variables
 
 Create a `.env` file in the project root:
 
@@ -95,7 +89,11 @@ npx cypress run
 ### Run tests in headed mode (browser visible)
 
 ```bash
-npm run test:headed
+npm run cy:open:chrome
+## or
+npm run cy:open:firefox
+## or
+npm run cy:open:edge
 ```
 
 ### Run tests with the interactive Cypress UI
@@ -107,32 +105,18 @@ npx cypress open
 ### Run a specific test file
 
 ```bash
-npx playwright test tests/e2e/cart.spec.ts
-npx playwright test tests/e2e/checkout.spec.ts
+npx cypress run --spec "cypress/e2e/checkout.cy.ts"
+npx cypress run --spec "cypress/e2e/cart.cy.ts"
 ```
 
 ### Run tests on a specific browser
 
-```bash
-npx playwright test --project=chromium
-npx playwright test --project=firefox
-npx playwright test --project=webkit
-```
-
----
-
-## 📊 Viewing the Test Report
-
-After a test run, open the HTML report with:
+# Run in Chrome
 
 ```bash
-npm run test:report
-```
-
-or:
-
-```bash
-npx
+npx cypress run --browser chrome
+npx cypress run --browser firefox
+npx cypress run --browser edge
 ```
 
 ---
@@ -143,25 +127,20 @@ npx
 sauselabsdemo/
 ├── .github/
 │   └── workflows/
-│       └── playwright.yml          # GitHub Actions CI workflow
-├── data/
-│   └── products.json               # External test data (products)
-├── tests/
-│   ├── e2e/
-│   │   ├── cart.spec.ts            # Cart tests
-│   │   └── checkout.spec.ts        # Checkout flow tests
-│   ├── pages/                      # Page Object Model classes
-│   │   ├── BasePage.ts
-│   │   ├── CartPage.ts
-│   │   ├── CheckoutPage.ts
-│   │   ├── LoginPage.ts
-│   │   └── ProductsPage.ts
-│   └── utilities/
-│       └── dataLoader.ts           # Helper to load test data
-├── config.ts            # Configuration
+│       └── cypress.yml      # GitHub Actions CI workflow
+├── e2e/
+│   │   ├── cart.cy.ts       # Cart tests
+│   │   └── checkout.cy.ts   # Checkout flow tests
+│   └─── pages/              # Page Object Model classes
+│       ├── BasePage.ts
+│       ├── CartPage.ts
+│       ├── CheckoutPage.ts
+│       ├── LoginPage.ts
+│       └── ProductsPage.ts
+├── cypress.config.ts         # Configuration
 ├── package.json
-├── .env                            # Local environment variables (not committed)
-├── .env.example                    # Environment variable template
+├── .env             # Local environment variables (not committed)
+├── .env.example     # Environment variables template
 └── README.md
 ```
 
