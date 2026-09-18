@@ -5,14 +5,18 @@ export class CheckoutStepOnePage extends BasePage {
   pageUrl = "/checkout-step-one.html";
 
   // Page elements
-  pageTitle = { fieldName: "page-title", locator: '[data-test="title"]', text: "Checkout: Your Information" };
-  readonly firstNameField = { fieldName: "first-name", locator: '[data-test="firstName"]' };
-  readonly lastNameField = { fieldName: "last-name", locator: '[data-test="lastName"]' };
-  readonly postalCodeField = { fieldName: "postal-code", locator: '[data-test="postalCode"]' };
-  readonly continueButton = { fieldName: "continue-button", locator: '[data-test="continue"]' };
-  readonly finishButton = { fieldName: "finish-button", locator: '[data-test="finish"]' };
-  readonly completeHeader = { fieldName: "complete-header", locator: '[data-test="complete-header"]' };
-  readonly primaryHeader = { fieldName: "primary-header", locator: '[data-test="title"]' };
+  pageTitle = {
+    fieldName: "page-title",
+    locator: '[data-test="title"]',
+    text: "Checkout: Your Information",
+  };
+  readonly firstNameField = { fieldName: "firstname", locator: '[data-test="firstName"]' };
+  readonly lastNameField = { fieldName: "lastname", locator: '[data-test="lastName"]' };
+  readonly postalCodeField = { fieldName: "postal code", locator: '[data-test="postalCode"]' };
+  readonly continueButton = { fieldName: "continue button", locator: '[data-test="continue"]' };
+  readonly finishButton = { fieldName: "finish button", locator: '[data-test="finish"]' };
+  readonly completeHeader = { fieldName: "complete header", locator: '[data-test="complete-header"]' };
+  readonly primaryHeader = { fieldName: "primary header", locator: '[data-test="title"]' };
 
   constructor() {
     super();
@@ -24,7 +28,7 @@ export class CheckoutStepOnePage extends BasePage {
    * @param lastName
    * @param postalCode
    */
-  fillShippingInformation(shippingData: ShippingData) {
+  async fillShippingInformation(shippingData: ShippingData) {
     cy.get(this.firstNameField.locator).type(shippingData.FirstName);
     cy.get(this.lastNameField.locator).type(shippingData.LastName);
     cy.get(this.postalCodeField.locator).type(shippingData.PostalCode);
@@ -34,7 +38,7 @@ export class CheckoutStepOnePage extends BasePage {
   /**
    * Finish order
    */
-  finishOrder() {
+  async finishOrder() {
     cy.get(this.finishButton.locator).click();
   }
 
@@ -46,6 +50,9 @@ export class CheckoutStepOnePage extends BasePage {
     return cy.get(this.completeHeader.locator).invoke("text");
   }
 
+  /**
+   * Click continue
+   */
   async clickContinue() {
     cy.get(this.continueButton.locator).click();
   }

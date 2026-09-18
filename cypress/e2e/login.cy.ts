@@ -14,7 +14,7 @@ describe("Login page tests", () => {
     productsPage = new ProductsPage();
 
     // Navigate to login page
-    return loginPage.open();
+    loginPage.open();
   });
 
   /**
