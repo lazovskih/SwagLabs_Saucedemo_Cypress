@@ -17,7 +17,7 @@ export class ProductsPage extends BasePage {
 
   /**
    * Click add to cart button
-   * @param productName
+   * @param productName product name string
    * @returns Promise<Locator>
    */
   async clickAddToCartButton(productName: string) {
@@ -26,7 +26,7 @@ export class ProductsPage extends BasePage {
 
   /**
    * Click remove button
-   * @param productName
+   * @param productName product name string
    * @returns Promise<Locator>
    */
   async clickRemoveButton(productName: string) {
@@ -35,7 +35,7 @@ export class ProductsPage extends BasePage {
 
   /**
    * Get remove button
-   * @param productName
+   * @param productName product name string
    * @returns Promise<Locator>
    */
   getAddToCartButton(productName: string) {
@@ -44,7 +44,7 @@ export class ProductsPage extends BasePage {
 
   /**
    * Get remove button
-   * @param productName
+   * @param productName product name string
    * @returns Promise<Locator>
    */
   getRemoveButton(productName: string) {
@@ -53,7 +53,7 @@ export class ProductsPage extends BasePage {
 
   /**
    * Add product to cart
-   * @param productName
+   * @param productName product name string
    */
   addProductToCart(productName: string) {
     this.clickAddToCartButton(productName).then(() => {});
@@ -61,7 +61,7 @@ export class ProductsPage extends BasePage {
 
   /**
    * Remove product from cart
-   * @param productName
+   * @param productName product name string
    */
   async removeProductFromCart(productName: string) {
     this.clickRemoveButton(productName).then(() => {
@@ -71,7 +71,7 @@ export class ProductsPage extends BasePage {
 
   /**
    * Add multiple products to cart
-   * @param productNames
+   * @param productNames product name strings array
    */
   addProductsToCart(productNames: string[]) {
     for (const productName of productNames) {
@@ -82,7 +82,7 @@ export class ProductsPage extends BasePage {
 
   /**
    * Remove multiple products from cart
-   * @param productNames
+   * @param productNames product name strings array
    */
   async removeProductsFromCart(productNames: string[]) {
     for (const productName of productNames) {

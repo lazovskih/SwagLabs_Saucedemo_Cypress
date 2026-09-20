@@ -1,6 +1,5 @@
 /// <reference types="cypress" />
 
-import { LoginPage } from "../pages/LoginPage";
 import { ProductsPage } from "../pages/ProductsPage";
 import { CartPage } from "../pages/CartPage";
 import { CheckoutStepOnePage } from "../pages/CheckoutStepOnePage";
@@ -15,40 +14,27 @@ describe("Checkout flow", () => {
   let checkoutStepOnePage: CheckoutStepOnePage;
   let checkoutStepTwoPage: CheckoutStepTwoPage;
   let checkoutCompletePage: CheckoutCompletePage;
-  let loginPage: LoginPage;
 
   beforeEach(() => {
-    // Login with valid credentials
-    loginPage = new LoginPage();
-    productsPage = new ProductsPage();
+    // Login with valid credentials from .env or Environment variables on CI/CD
+    cy.loginUI("standard_user", "secret_sauce").then(() => {
+      productsPage = new ProductsPage();
+      cartPage = new CartPage();
 
-    cy.env(["USERNAME", "PASSWORD"]).then((env) => {
-      const { USERNAME, PASSWORD } = env;
-      if (typeof USERNAME !== "string" || typeof PASSWORD !== "string") {
-        throw new Error("The Cypress username and PASSWORD environment variables must be configured.");
-      }
-      loginPage.login(USERNAME, PASSWORD);
+      checkoutStepOnePage = new CheckoutStepOnePage();
+      checkoutStepTwoPage = new CheckoutStepTwoPage();
+      checkoutCompletePage = new CheckoutCompletePage();
 
-      // Verify Products page is displayed
-      productsPage.getCurrentUrl().should("contain", productsPage.pageUrl);
-      productsPage.getPageTitle().should("equal", productsPage.pageTitleText);
+      // Navigate directly to the products page using the pre-authenticated state
+      productsPage.open();
     });
-
-    productsPage = new ProductsPage();
-    cartPage = new CartPage();
-    checkoutStepOnePage = new CheckoutStepOnePage();
-    checkoutStepTwoPage = new CheckoutStepTwoPage();
-    checkoutCompletePage = new CheckoutCompletePage();
-
-    // Navigate directly to the products page using the pre-authenticated state
-    productsPage.open();
   });
 
   it("Completes checkout for a selected product", () => {
     // Add products to cart
-    cy.log("Adding products to cart: " + products[0].Name + ", " + products[1].Name);
+    cy.log("Adding products to cart: " + products[0]!!.Name + ", " + products[1]!!.Name);
 
-    productsPage.addProductsToCart([products[0].Name, products[1].Name]);
+    productsPage.addProductsToCart([products[0]!.Name, products[1]!.Name]);
     productsPage.getCartCount().then((count) => {
       expect(count).to.equal(2);
     });
@@ -68,7 +54,7 @@ describe("Checkout flow", () => {
       });
 
       // Fill shipping information and continue to overview page
-      checkoutStepOnePage.fillShippingInformation(shippingInfo[0]);
+      checkoutStepOnePage.fillShippingInformation(shippingInfo[0]!);
       checkoutStepTwoPage.getPageTitle().then((title) => {
         expect(title, "Checkout page two page title").to.equal(checkoutStepTwoPage.pageTitle.text);
       });
@@ -78,9 +64,9 @@ describe("Checkout flow", () => {
       checkoutCompletePage.getPageTitle().then((title) => {
         expect(title, "Checkout complete page title").equal(checkoutCompletePage.pageTitle.text);
 
-        cy.get(checkoutCompletePage.thankYouMessage.locator)
+        cy.get(checkoutCompletePage.completeHeader.locator)
           .should("be.visible")
-          .and("have.text", checkoutCompletePage.thankYouMessage.text);
+          .and("have.text", checkoutCompletePage.completeHeader.text);
 
         cy.get(checkoutCompletePage.orderDispatchMessage.locator)
           .should("be.visible")
@@ -102,7 +88,7 @@ describe("Checkout flow", () => {
     let expectedTotal: string;
 
     // Add multiple products to cart
-    productsPage.addProductsToCart([products[1].Name, products[2].Name]);
+    productsPage.addProductsToCart([products[1]!.Name, products[2]!.Name]);
     productsPage.getCartCount().then((count) => {
       expect(count, "Items count on cart badge").to.equal(2);
 
@@ -120,26 +106,26 @@ describe("Checkout flow", () => {
           expect(title, "Checkout step one page title").equal(checkoutStepOnePage.pageTitle.text);
 
           // Fill shipping information and continue to overview page
-          checkoutStepOnePage.fillShippingInformation(shippingInfo[0]);
+          checkoutStepOnePage.fillShippingInformation(shippingInfo[0]!);
 
           // Verify checkout step two page title
           checkoutStepTwoPage.getPageTitle().then((title) => {
             expect(title, "Checkout step two page title").to.equal(checkoutStepTwoPage.pageTitle.text);
+          });
 
-            // Verify subtotal, tax, and total amounts
-            checkoutStepTwoPage.getSubtotal().then((actualSubtotal) => {
-              expectedSubtotal = (products[1].Price + products[2].Price).toFixed(2);
-              expect(actualSubtotal, "Verify subtotal is correct").equal(expectedSubtotal);
-            });
+          // Verify subtotal, tax, and total amounts
+          checkoutStepTwoPage.getSubtotal().then((actualSubtotal) => {
+            expectedSubtotal = (products[1]!.Price + products[2]!.Price).toFixed(2);
+            expect(actualSubtotal.toString(), "Verify subtotal is correct").equal(expectedSubtotal);
+          });
 
-            // Calculate expected total based on subtotal and tax, then verify total
-            checkoutStepTwoPage.getTax().then((actualTaxStr) => {
-              const actualTax = parseFloat(actualTaxStr);
-              expectedTotal = (parseFloat(expectedSubtotal) + actualTax).toFixed(2);
-              checkoutStepTwoPage.getTotal().then((actualTotal) => {
-                expect(actualTotal, "Verify total is correct").equal(expectedTotal);
-              });
-            });
+          // Calculate expected total based on subtotal and tax, then verify total
+          checkoutStepTwoPage.getTax().then((actualTax) => {
+            expectedTotal = (parseFloat(expectedSubtotal) + actualTax).toFixed(2);
+          });
+
+          checkoutStepTwoPage.getTotal().then((actualTotal) => {
+            expect(actualTotal.toString(), "Verify total is correct").equal(expectedTotal);
           });
         });
       });

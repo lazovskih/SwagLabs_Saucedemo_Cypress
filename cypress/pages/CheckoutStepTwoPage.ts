@@ -1,4 +1,5 @@
 import { BasePage } from "./BasePage";
+import { parseCurrencyToNumber } from "../utilities/formatters";
 
 export class CheckoutStepTwoPage extends BasePage {
   pageUrl = "/checkout-step-two.html";
@@ -25,60 +26,56 @@ export class CheckoutStepTwoPage extends BasePage {
   }
 
   /**
-   * Get summary subtotal text
+   * Retrieves the Subtotal amount as a parsed number.
+   * @returns total as number
    */
-  getSubtotal(): Cypress.Chainable<string> {
-    let subtotalText;
-    return cy.get(this.summarySubtotal.locator).then((el) => {
-      subtotalText = el.text();
-      // Extract numeric part from "Item total: $39.98" -> "39.98"
-      const match = subtotalText?.match(/\$(\d+\.?\d*)/);
-      return match ? match[1] : "";
-    });
+  public getSubtotal(): Cypress.Chainable<number> {
+    return cy
+      .get(this.summarySubtotal.locator)
+      .invoke("text")
+      .then((rawText) => parseCurrencyToNumber(rawText));
   }
 
   /**
-   * Get summary tax text
+   * Retrieves the Tax amount as a parsed number.
+   * @returns total as number
    */
-  getTax(): Cypress.Chainable<string> {
-    let taxText;
-    return cy.get(this.summaryTax.locator).then((el) => {
-      taxText = el.text();
-      // Extract numeric part from "Tax: $1.92" -> "1.92"
-      const match = taxText?.match(/\$(\d+\.?\d*)/);
-      return match ? match[1] : "";
-    });
+  public getTax(): Cypress.Chainable<number> {
+    return cy
+      .get(this.summaryTax.locator)
+      .invoke("text")
+      .then((rawText) => parseCurrencyToNumber(rawText));
   }
 
   /**
-   * Get summary total text
+   * Retrieves the Total amount as a parsed number.
+   * @returns total as number
    */
-  getTotal(): Cypress.Chainable<string> {
-    let totalText;
-    return cy.get(this.summaryTotal.locator).then((ele) => {
-      totalText = ele.text();
-      // Extract numeric part from "Total: $41.90" -> "41.90"
-      const match = totalText?.match(/\$(\d+\.?\d*)/);
-      return match ? match[1] : "";
-    });
+  public getTotal(): Cypress.Chainable<number> {
+    return cy
+      .get(this.summaryTotal.locator)
+      .invoke("text")
+      .then((rawText) => parseCurrencyToNumber(rawText));
   }
 
   /**
    * Click finish button
    */
-  clickFinish() {
+  async clickFinish() {
     cy.get(this.finishButton.locator).click();
   }
 
   /**
-   * Get complete header text
+   * Get the complete header text after finishing the order
+   * @returns string
    */
-  getCompleteHeader(): Cypress.Chainable<string> {
+  getCompleteHeaderText() {
     return cy.get(this.completeHeader.locator).invoke("text");
   }
 
   /**
    * Get complete text
+   * @returns string
    */
   getCompleteText(): Cypress.Chainable<string> {
     return cy.get(this.completeText.locator).invoke("text");
@@ -92,23 +89,9 @@ export class CheckoutStepTwoPage extends BasePage {
   }
 
   /**
-   * Check if checkout is complete
-   */
-  isCheckoutComplete() {
-    return cy.get(this.completeHeader.locator).should("be.visible");
-  }
-
-  /**
    * Finish the order by clicking the finish button
    */
-  finishOrder() {
+  async finishOrder() {
     cy.get(this.finishButton.locator).click();
-  }
-
-  /**
-   * Get the complete header text after finishing the order
-   */
-  getCompleteHeaderText() {
-    return cy.get(this.completeHeader.locator).invoke("text");
   }
 }
