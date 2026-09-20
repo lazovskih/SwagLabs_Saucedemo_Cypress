@@ -44,13 +44,10 @@ Cypress.Commands.add("loginUI", (username?: string, password?: string): void => 
 
       // Verify that authentication completed successfully
       productsPage.getCurrentUrl().should("include", productsPage.pageUrl);
+      productsPage.getPageTitle().should("equal", productsPage.pageTitleText);
     },
     sessionOptions,
   );
-
-  // 3. Re-hydrate the DOM: cy.session() intentionally clears the DOM upon setup/restoration
-  productsPage.open();
-  productsPage.getPageTitle().should("equal", productsPage.pageTitleText);
 });
 
 // -- This is a child command --

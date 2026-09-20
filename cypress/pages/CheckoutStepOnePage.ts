@@ -44,7 +44,7 @@ export class CheckoutStepOnePage extends BasePage {
 
   /**
    * Get complete header text
-   * @returns Promise<string | null>
+   * @returns header text as Promise<string | null>
    */
   getCompleteHeaderText(): Cypress.Chainable<string | null> {
     return cy.get(this.completeHeader.locator).invoke("text");

@@ -27,6 +27,7 @@ export class CheckoutStepTwoPage extends BasePage {
 
   /**
    * Retrieves the Subtotal amount as a parsed number.
+   * @returns total as number
    */
   public getSubtotal(): Cypress.Chainable<number> {
     return cy
@@ -37,6 +38,7 @@ export class CheckoutStepTwoPage extends BasePage {
 
   /**
    * Retrieves the Tax amount as a parsed number.
+   * @returns total as number
    */
   public getTax(): Cypress.Chainable<number> {
     return cy
@@ -47,6 +49,7 @@ export class CheckoutStepTwoPage extends BasePage {
 
   /**
    * Retrieves the Total amount as a parsed number.
+   * @returns total as number
    */
   public getTotal(): Cypress.Chainable<number> {
     return cy
@@ -63,14 +66,16 @@ export class CheckoutStepTwoPage extends BasePage {
   }
 
   /**
-   * Get complete header text
+   * Get the complete header text after finishing the order
+   * @returns string
    */
-  getCompleteHeader(): Cypress.Chainable<string> {
+  getCompleteHeaderText() {
     return cy.get(this.completeHeader.locator).invoke("text");
   }
 
   /**
    * Get complete text
+   * @returns string
    */
   getCompleteText(): Cypress.Chainable<string> {
     return cy.get(this.completeText.locator).invoke("text");
@@ -88,12 +93,5 @@ export class CheckoutStepTwoPage extends BasePage {
    */
   async finishOrder() {
     cy.get(this.finishButton.locator).click();
-  }
-
-  /**
-   * Get the complete header text after finishing the order
-   */
-  getCompleteHeaderText() {
-    return cy.get(this.completeHeader.locator).invoke("text");
   }
 }

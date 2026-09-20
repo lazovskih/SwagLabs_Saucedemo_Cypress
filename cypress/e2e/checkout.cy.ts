@@ -1,6 +1,5 @@
 /// <reference types="cypress" />
 
-import { LoginPage } from "../pages/LoginPage";
 import { ProductsPage } from "../pages/ProductsPage";
 import { CartPage } from "../pages/CartPage";
 import { CheckoutStepOnePage } from "../pages/CheckoutStepOnePage";
@@ -15,7 +14,6 @@ describe("Checkout flow", () => {
   let checkoutStepOnePage: CheckoutStepOnePage;
   let checkoutStepTwoPage: CheckoutStepTwoPage;
   let checkoutCompletePage: CheckoutCompletePage;
-  let loginPage: LoginPage;
 
   beforeEach(() => {
     // Login with valid credentials from .env or Environment variables on CI/CD
@@ -23,16 +21,13 @@ describe("Checkout flow", () => {
       productsPage = new ProductsPage();
       cartPage = new CartPage();
 
+      checkoutStepOnePage = new CheckoutStepOnePage();
+      checkoutStepTwoPage = new CheckoutStepTwoPage();
+      checkoutCompletePage = new CheckoutCompletePage();
+
+      // Navigate directly to the products page using the pre-authenticated state
       productsPage.open();
     });
-    productsPage = new ProductsPage();
-    cartPage = new CartPage();
-    checkoutStepOnePage = new CheckoutStepOnePage();
-    checkoutStepTwoPage = new CheckoutStepTwoPage();
-    checkoutCompletePage = new CheckoutCompletePage();
-
-    // Navigate directly to the products page using the pre-authenticated state
-    productsPage.open();
   });
 
   it("Completes checkout for a selected product", () => {
@@ -69,9 +64,9 @@ describe("Checkout flow", () => {
       checkoutCompletePage.getPageTitle().then((title) => {
         expect(title, "Checkout complete page title").equal(checkoutCompletePage.pageTitle.text);
 
-        cy.get(checkoutCompletePage.thankYouMessage.locator)
+        cy.get(checkoutCompletePage.completeHeader.locator)
           .should("be.visible")
-          .and("have.text", checkoutCompletePage.thankYouMessage.text);
+          .and("have.text", checkoutCompletePage.completeHeader.text);
 
         cy.get(checkoutCompletePage.orderDispatchMessage.locator)
           .should("be.visible")

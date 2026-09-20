@@ -6,15 +6,15 @@ import products from "../fixtures/products.json";
 
 describe("Shopping cart flow", () => {
   let productsPage: ProductsPage;
-  // let loginPage: LoginPage;
   let cartPage: CartPage;
 
-  before(() => {
+  beforeEach(() => {
     // Login with valid credentials from .env or Environment variables on CI/CD
     cy.loginUI("standard_user", "secret_sauce").then(() => {
       productsPage = new ProductsPage();
       cartPage = new CartPage();
 
+      // Navigate directly to the products page using the pre-authenticated state
       productsPage.open();
     });
   });
@@ -120,7 +120,7 @@ describe("Shopping cart flow", () => {
     }
   });
 
-  it.only("remove button on products page should not be present for items removed from cart", () => {
+  it("remove button on products page should not be present for items removed from cart", () => {
     // Add 3 items
     const itemsToAdd = [products[0]!.Name, products[1]!.Name, products[2]!.Name];
     productsPage.addProductsToCart(itemsToAdd);

@@ -65,6 +65,10 @@ export class LoginPage extends BasePage {
     return cy.get(this.errorMessage.locator).then(($element) => $element.is(":visible"));
   }
 
+  /**
+   * Gets the error message text.
+   * @returns error message text string.
+   */
   getErrorMessageText(): Cypress.Chainable<string> {
     return cy.get(this.errorMessage.locator).invoke("text");
   }

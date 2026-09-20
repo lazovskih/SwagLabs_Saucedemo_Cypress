@@ -11,7 +11,7 @@ export class CheckoutCompletePage extends BasePage {
     fieldName: "primary-header",
     locator: "div.login_logo",
   };
-  readonly thankYouMessage = {
+  readonly completeHeader = {
     fieldName: "Thank You Message",
     locator: '[data-test="complete-header"]',
     text: "Thank you for your order!",
