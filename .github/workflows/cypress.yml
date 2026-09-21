@@ -25,6 +25,7 @@ jobs:
         env:
           STANDARD_USER: ${{ secrets.STANDARD_USER }}
           DEMO_PASSWORD: ${{ secrets.DEMO_PASSWORD }}
+          GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
           URL: ${{ vars.URL }}
 
       - name: Upload Cypress artifacts
