@@ -19,7 +19,7 @@ describe("Shopping cart flow", () => {
     });
   });
 
-  it("adds selected products to the cart and verifies cart contents", () => {
+  it("Adds selected products to the cart and verifies cart contents", () => {
     cy.log("Adding products to cart: " + products[0]!!.Name + ", " + products[1]!!.Name);
     productsPage.addProductsToCart([products[0]!!.Name, products[1]!!.Name]);
     productsPage.getCartCount().then((count) => {
@@ -41,7 +41,7 @@ describe("Shopping cart flow", () => {
     cy.get(cartPage.cartItems.locator).its("length").should("equal", 2);
   });
 
-  it("button changes from 'Add to cart' to 'Remove' when clicked", () => {
+  it("Button changes from 'Add to cart' to 'Remove' when clicked", () => {
     const productName = products[0]!!.Name;
 
     productsPage
@@ -62,7 +62,7 @@ describe("Shopping cart flow", () => {
       });
   });
 
-  it("button changes from 'Remove' to 'Add to cart' when clicked", () => {
+  it("Button changes from 'Remove' to 'Add to cart' when clicked", () => {
     // Loop through all products
     for (const product of products) {
       productsPage
@@ -83,7 +83,7 @@ describe("Shopping cart flow", () => {
     }
   });
 
-  it("cart badge updates quantity correctly when items are added and removed", () => {
+  it("Cart badge updates quantity correctly when items are added and removed", () => {
     let expectedCount = 0;
 
     // Add all items and verify badge count increments
@@ -120,7 +120,7 @@ describe("Shopping cart flow", () => {
     }
   });
 
-  it("remove button on products page should not be present for items removed from cart", () => {
+  it("Remove button on products page should not be present for items removed from cart", () => {
     // Add 3 items
     const itemsToAdd = [products[0]!.Name, products[1]!.Name, products[2]!.Name];
     productsPage.addProductsToCart(itemsToAdd);

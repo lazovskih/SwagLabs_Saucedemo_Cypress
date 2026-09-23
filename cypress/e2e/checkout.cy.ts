@@ -124,6 +124,7 @@ describe("Checkout flow", () => {
             expectedTotal = (parseFloat(expectedSubtotal) + actualTax).toFixed(2);
           });
 
+          // Verify total amount
           checkoutStepTwoPage.getTotal().then((actualTotal) => {
             expect(actualTotal.toString(), "Verify total is correct").equal(expectedTotal);
           });

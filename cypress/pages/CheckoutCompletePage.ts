@@ -33,7 +33,33 @@ export class CheckoutCompletePage extends BasePage {
     text: "Generate PDF order",
   };
 
+  private readonly completeText = { fieldName: "complete-text", locator: '[data-test="complete-text"]' };
+  private readonly backHomeButton = { fieldName: "back-home", locator: '[data-test="back-home"]' };
+
   constructor() {
     super();
+  }
+
+  /**
+   * Get complete text
+   * @returns string
+   */
+  getCompleteText(): Cypress.Chainable<string> {
+    return cy.get(this.completeText.locator).invoke("text");
+  }
+
+  /**
+   * Click back home button
+   */
+  clickBackHome() {
+    cy.get(this.backHomeButton.locator).click();
+  }
+
+  /**
+   * Get the complete header text after finishing the order
+   * @returns string
+   */
+  getCompleteHeaderText() {
+    return cy.get(this.completeHeader.locator).invoke("text");
   }
 }

@@ -72,6 +72,8 @@ Add your credentials to `.env`:
 STANDARD_USER=set_username
 DEMO_PASSWORD=set_password
 URL=https://www.saucedemo.com
+CYPRESS_PROJECT_ID=cypress_project_id
+CYPRESS_CLOUD_KEY=cypress_cloud_key
 ```
 
 > ⚠️ **Never commit your `.env` file.** It is already listed in `.gitignore`.
@@ -127,21 +129,21 @@ npx cypress run --browser edge
 sauselabsdemo/
 ├── .github/
 │   └── workflows/
-│       └── cypress.yml      # GitHub Actions CI workflow
+│       └── cypress.yml         # GitHub Actions CI workflow
 ├── e2e/
-│   │   ├── cart.cy.ts       # Cart tests
-│   │   └── checkout.cy.ts   # Checkout flow tests
-│   └─── pages/              # Page Object Model classes
+│   │   ├── cart.cy.ts          # Cart tests
+│   │   └── checkout.cy.ts      # Checkout flow tests
+│   └─── pages/                 # Page Object Model classes
 │       ├── BasePage.ts
 │       ├── CartPage.ts
 │       ├── CheckoutPage.ts
 │       ├── LoginPage.ts
 │       └── ProductsPage.ts
-├── cypress.config.ts         # Configuration
+├── cypress.config.ts           # Configuration
 ├── package.json
-├── .env             # Local environment variables (not committed)
-├── .env.example     # Environment variables template
-└── README.md
+├── .env                        # Local environment variables (not committed)
+├── .env.example                # Environment variables template
+└── README.md                   # This file
 ```
 
 ---

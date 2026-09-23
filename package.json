@@ -6,6 +6,8 @@
   "scripts": {
     "cy:open": "cypress open",
     "cy:run": "cypress run",
+    "cy:run:chrome": "cypress run --record --browser chrome",
+    "cy:run:firefox": "cypress run --record --browser firefox",
     "cy:open:chrome": "npx cypress open --e2e --browser chrome",
     "cy:open:firefox": "npx cypress open --e2e --browser firefox",
     "cy:open:edge": "npx cypress open --e2e --browser edge",
@@ -15,8 +17,15 @@
     "type": "git",
     "url": "git+https://github.com/lazovskih/SwagLabs_Saucedemo_Cypress.git"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "SwagLabs",
+    "Saucedemo",
+    "Cypress",
+    "automation",
+    "TypeScript",
+    "Page Object Model"
+  ],
+  "author": "Vitaly L",
   "license": "ISC",
   "type": "commonjs",
   "bugs": {

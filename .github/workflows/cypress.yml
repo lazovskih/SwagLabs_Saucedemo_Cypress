@@ -8,25 +8,31 @@ jobs:
     timeout-minutes: 10
     runs-on: ubuntu-latest
     environment: TEST
+    strategy:
+      fail-fast: false
+      matrix:
+        containers: [1, 2]
     steps:
-      - uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Checkout
+        uses: actions/checkout@v6
+      - name: Cypress run
+        # Uses the official Cypress GitHub action https://github.com/cypress-io/github-action
+        uses: cypress-io/github-action@v7
         with:
-          node-version: lts/*
-          cache: npm
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Run Cypress tests
-        run: npm run cy:run
+          # Starts web server for E2E tests - replace with your own server invocation
+          # https://docs.cypress.io/app/continuous-integration/overview#Boot-your-server
+          start: npm start
+          wait-on: "http://localhost:3000" # Waits for above
+          # Records to Cypress Cloud
+          record: true
+          parallel: true # Runs test in parallel using settings above
         env:
           STANDARD_USER: ${{ secrets.STANDARD_USER }}
           DEMO_PASSWORD: ${{ secrets.DEMO_PASSWORD }}
           URL: ${{ vars.URL }}
-
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+          CYPRESS_PROJECT_ID: ${{ secrets.CYPRESS_PROJECT_ID }}
+          GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
       - name: Upload Cypress artifacts
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v4
