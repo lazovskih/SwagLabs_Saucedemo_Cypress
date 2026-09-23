@@ -1,6 +1,6 @@
 {
   "name": "saucedemo_cypress",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "A demo end-to-end test automation project for the [SauceDemo](https://www.saucedemo.com) website — a simple e-commerce application designed specifically for testing practice. The project is built with [Cypress](https://cypress.io/) and TypeScript.",
   "main": "cypress.config.js",
   "scripts": {
