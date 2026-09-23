@@ -22,6 +22,13 @@ jobs:
           # Records to Cypress Cloud
           record: true
           parallel: true # Runs test in parallel using settings above
+        env:
+          STANDARD_USER: ${{ secrets.STANDARD_USER }}
+          DEMO_PASSWORD: ${{ secrets.DEMO_PASSWORD }}
+          URL: ${{ vars.URL }}
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+          CYPRESS_PROJECT_ID: ${{ secrets.CYPRESS_PROJECT_ID }}
+          GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -40,6 +47,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
       - name: Run Cypress tests
         run: npm run cy:run
+        env:
+          STANDARD_USER: ${{ secrets.STANDARD_USER }}
+          DEMO_PASSWORD: ${{ secrets.DEMO_PASSWORD }}
+          URL: ${{ vars.URL }}
       - name: Upload Cypress artifacts
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v4
