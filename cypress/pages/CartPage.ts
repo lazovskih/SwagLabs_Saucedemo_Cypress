@@ -1,3 +1,4 @@
+import { Product } from "../support/types/product";
 import { BasePage } from "./BasePage";
 
 export class CartPage extends BasePage {
@@ -18,11 +19,11 @@ export class CartPage extends BasePage {
 
   /**
    * Get product count
-   * @param productName
+   * @param product object
    * @returns Promise<number>
    */
-  getProductCount(productName: string): Cypress.Chainable<number> {
-    return cy.get(this.cartItems.locator).filter(`:contains("${productName}")`).its("length");
+  getProductCount(product: Product): Cypress.Chainable<number> {
+    return cy.get(this.cartItems.locator).filter(`:contains("${product.Name}")`).its("length");
   }
 
   /**
@@ -42,40 +43,37 @@ export class CartPage extends BasePage {
 
   /**
    * Click remove button
-   * @param productName
+   * @param product product object
    * @returns Promise<Locator>
    */
-  async clickRemoveButton(productName: string) {
-    cy.get(`[data-test="remove-${this.getProductId(productName)}"]`).click();
+  async clickRemoveButton(product: Product) {
+    cy.get(`[data-test="remove-${this.getProductId(product)}"]`).click();
   }
 
   /**
    * Get remove button
-   * @param productName
+   * @param product product object
    * @returns Promise<Locator>
    */
-  getRemoveButton(productName: string) {
-    return cy.get(`[data-test="remove-${this.getProductId(productName)}"]`);
+  getRemoveButton(product: Product) {
+    return cy.get(`[data-test="remove-${this.getProductId(product)}"]`);
   }
 
   /**
    * Remove product from cart
-   * @param productName
+   * @param product product object
    */
-  async removeProduct(productName: string) {
-    this.clickRemoveButton(productName).then(() => {
-      console.log(`removeProductFromCart: Product removed from cart: ${productName}`);
-    });
+  async removeProduct(product: Product) {
+    this.clickRemoveButton(product);
   }
 
   /**
    * Remove multiple products from cart
-   * @param productNames
+   * @param product product objects array
    */
-  async removeProductsFromCart(productNames: string[]) {
-    for (const productName of productNames) {
-      console.log(`Removing product from cart: ${productName}`);
-      await this.removeProduct(productName);
+  async removeProductsFromCart(products: Product[]) {
+    for (const product of products) {
+      await this.removeProduct(product);
     }
   }
 

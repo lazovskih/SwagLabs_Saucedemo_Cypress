@@ -1,3 +1,5 @@
+import { Product } from "../support/types/product";
+
 export abstract class BasePage {
   abstract pageUrl: string;
   abstract primaryHeader: { fieldName: string; locator: string };
@@ -73,10 +75,10 @@ export abstract class BasePage {
 
   /**
    * Get product ID
-   * @param productName
+   * @param product product object
    * @returns Promise<string>
    */
-  getProductId(productName: string) {
-    return productName.toLowerCase().replace(/\s+/g, "-");
+  getProductId(product: Product) {
+    return product.Name.toLowerCase().replace(/\s+/g, "-");
   }
 }

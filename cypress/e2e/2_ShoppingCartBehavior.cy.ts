@@ -2,9 +2,12 @@
 
 import { ProductsPage } from "../pages/ProductsPage";
 import { CartPage } from "../pages/CartPage";
-import products from "../fixtures/products.json";
+import { Product } from "../support/types/product";
+import productsList from "../fixtures/products.json";
 
-describe("Shopping cart flow", () => {
+const products: Product[] = productsList;
+
+describe("Shopping cart behavior", () => {
   let productsPage: ProductsPage;
   let cartPage: CartPage;
 
@@ -20,8 +23,10 @@ describe("Shopping cart flow", () => {
   });
 
   it("Adds selected products to the cart and verifies cart contents", () => {
-    cy.log("Adding products to cart: " + products[0]!!.Name + ", " + products[1]!!.Name);
-    productsPage.addProductsToCart([products[0]!!.Name, products[1]!!.Name]);
+    // Add multiple products to cart
+    const selectedProducts: Product[] = [products[1]!, products[3]!];
+
+    productsPage.addProductsToCart(selectedProducts);
     productsPage.getCartCount().then((count) => {
       expect(count).to.equal(2);
     });
@@ -32,33 +37,33 @@ describe("Shopping cart flow", () => {
     cartPage.getPageTitle().then((title) => {
       expect(title).to.equal(cartPage.pageTitle.text);
     });
-    cartPage.getProductCount(products[0]!!.Name).then((count) => {
+    cartPage.getProductCount(selectedProducts[0]!).then((count) => {
       expect(count).to.equal(1);
     });
-    cartPage.getProductCount(products[1]!!.Name).then((count) => {
+    cartPage.getProductCount(selectedProducts[1]!).then((count) => {
       expect(count).to.equal(1);
     });
     cy.get(cartPage.cartItems.locator).its("length").should("equal", 2);
   });
 
   it("Button changes from 'Add to cart' to 'Remove' when clicked", () => {
-    const productName = products[0]!!.Name;
+    const product = products[0];
 
     productsPage
-      .getAddToCartButton(productName)
+      .getAddToCartButton(product!)
       .should("be.visible")
       .then((addToCartButton) => {
         cy.wrap(addToCartButton).click();
-        productsPage.getAddToCartButton(productName).should("not.exist");
+        productsPage.getAddToCartButton(product!).should("not.exist");
       });
 
     productsPage
-      .getRemoveButton(productName)
+      .getRemoveButton(product!)
       .should("be.visible")
       .then((removeButton) => {
         cy.wrap(removeButton).click();
-        productsPage.getRemoveButton(productName).should("not.exist");
-        productsPage.getAddToCartButton(productName).should("be.visible");
+        productsPage.getRemoveButton(product!).should("not.exist");
+        productsPage.getAddToCartButton(product!).should("be.visible");
       });
   });
 
@@ -66,19 +71,19 @@ describe("Shopping cart flow", () => {
     // Loop through all products
     for (const product of products) {
       productsPage
-        .getAddToCartButton(product.Name)
+        .getAddToCartButton(product)
         .should("be.visible")
         .then((addToCartButton) => {
           cy.wrap(addToCartButton).click();
         });
 
       productsPage
-        .getRemoveButton(product.Name)
+        .getRemoveButton(product)
         .should("be.visible")
         .then((removeButton) => {
           cy.wrap(removeButton).click();
-          productsPage.getRemoveButton(product.Name).should("not.exist");
-          productsPage.getAddToCartButton(product.Name).should("be.visible");
+          productsPage.getRemoveButton(product).should("not.exist");
+          productsPage.getAddToCartButton(product).should("be.visible");
         });
     }
   });
@@ -89,12 +94,11 @@ describe("Shopping cart flow", () => {
     // Add all items and verify badge count increments
     for (const product of products) {
       productsPage
-        .getAddToCartButton(product.Name)
+        .getAddToCartButton(product)
         .should("be.visible")
         .then((addToCartButton) => {
           cy.wrap(addToCartButton).click();
           expectedCount++;
-          console.log(`Added product to cart: ${product.Name}, expected count: ${expectedCount}`);
         });
 
       cy.get(productsPage.cartBadge.locator).should("be.visible");
@@ -106,12 +110,11 @@ describe("Shopping cart flow", () => {
     // Remove all items and verify badge count decrements
     for (const product of products) {
       productsPage
-        .getRemoveButton(product.Name)
+        .getRemoveButton(product)
         .should("be.visible")
         .then((removeButton) => {
           cy.wrap(removeButton).click();
           expectedCount--;
-          console.log(`Removed product from cart: ${product.Name}, expected count: ${expectedCount}`);
         });
 
       productsPage.getCartCount().then((count) => {
@@ -122,20 +125,20 @@ describe("Shopping cart flow", () => {
 
   it("Remove button on products page should not be present for items removed from cart", () => {
     // Add 3 items
-    const itemsToAdd = [products[0]!.Name, products[1]!.Name, products[2]!.Name];
-    productsPage.addProductsToCart(itemsToAdd);
+    const selectedProducts: Product[] = [products[1]!, products[3]!];
+    productsPage.addProductsToCart(selectedProducts);
 
     // Verify cart count is 3
-    productsPage.getCartCount().should("equal", 3);
+    productsPage.getCartCount().should("equal", selectedProducts.length);
 
     // Open Cart
     productsPage.viewCart();
     const cartPage = new CartPage();
 
     // Remove 2 items from the cart
-    for (let i = 0; i < itemsToAdd.length; i++) {
-      if (typeof itemsToAdd[i] == "string" && itemsToAdd[i]?.trim() != "") {
-        cartPage.removeProduct(itemsToAdd[i]!);
+    for (let i = 0; i < selectedProducts.length; i++) {
+      if (typeof selectedProducts[i]?.Name == "string" && selectedProducts[i]?.Name.trim() != "") {
+        cartPage.removeProduct(selectedProducts[i]!);
       }
     }
 
@@ -143,9 +146,9 @@ describe("Shopping cart flow", () => {
     cartPage.continueShopping();
 
     // Verify the "Remove" button is NOT present for those removed items
-    for (let i = 0; i < itemsToAdd.length; i++) {
-      if (typeof itemsToAdd[i] == "string" && itemsToAdd[i]?.trim() != "") {
-        productsPage.getRemoveButton(itemsToAdd[0]!).should("not.exist");
+    for (let i = 0; i < selectedProducts.length; i++) {
+      if (typeof selectedProducts[i]?.Name == "string" && selectedProducts[i]?.Name.trim() != "") {
+        productsPage.getRemoveButton(selectedProducts[i]!).should("not.exist");
       }
     }
   });
