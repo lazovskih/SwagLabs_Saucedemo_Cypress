@@ -3,7 +3,7 @@ require("dotenv").config();
 const { defineConfig } = require("cypress");
 
 module.exports = defineConfig({
-  projectId: process.env.CYPRESS_PROJECT_ID,
+  projectId: "pttokf",
   e2e: {
     BASEURL: process.env.URL,
     setupNodeEvents(on, config) {
