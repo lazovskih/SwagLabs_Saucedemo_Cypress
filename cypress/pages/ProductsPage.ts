@@ -1,3 +1,4 @@
+import { Product } from "../support/types/product";
 import { BasePage } from "./BasePage";
 
 export class ProductsPage extends BasePage {
@@ -17,77 +18,74 @@ export class ProductsPage extends BasePage {
 
   /**
    * Click add to cart button
-   * @param productName product name string
+   * @param product object
    * @returns Promise<Locator>
    */
-  async clickAddToCartButton(productName: string) {
-    cy.get(`[data-test="add-to-cart-${this.getProductId(productName)}"]`).click();
+  async clickAddToCartButton(product: Product) {
+    cy.get(`[data-test="add-to-cart-${this.getProductId(product)}"]`).click();
   }
 
   /**
    * Click remove button
-   * @param productName product name string
+   * @param product object
    * @returns Promise<Locator>
    */
-  async clickRemoveButton(productName: string) {
-    cy.get(`[data-test="remove-${this.getProductId(productName)}"]`).click();
+  async clickRemoveButton(product: Product) {
+    cy.get(`[data-test="remove-${this.getProductId(product)}"]`).click();
   }
 
   /**
    * Get remove button
-   * @param productName product name string
+   * @param product object
    * @returns Promise<Locator>
    */
-  getAddToCartButton(productName: string) {
-    return cy.get(`[data-test="add-to-cart-${this.getProductId(productName)}"]`);
+  getAddToCartButton(product: Product) {
+    return cy.get(`[data-test="add-to-cart-${this.getProductId(product)}"]`);
   }
 
   /**
    * Get remove button
-   * @param productName product name string
+   * @param product object
    * @returns Promise<Locator>
    */
-  getRemoveButton(productName: string) {
-    return cy.get(`[data-test="remove-${this.getProductId(productName)}"]`);
+  getRemoveButton(product: Product) {
+    return cy.get(`[data-test="remove-${this.getProductId(product)}"]`);
   }
 
   /**
    * Add product to cart
-   * @param productName product name string
+   * @param product product object
    */
-  addProductToCart(productName: string) {
-    this.clickAddToCartButton(productName).then(() => {});
+  addProductToCart(product: Product) {
+    this.clickAddToCartButton(product);
   }
 
   /**
    * Remove product from cart
-   * @param productName product name string
+   * @param product product object
    */
-  async removeProductFromCart(productName: string) {
-    this.clickRemoveButton(productName).then(() => {
-      console.log(`removeProductFromCart: Product removed from cart: ${productName}`);
-    });
+  async removeProductFromCart(product: Product) {
+    this.clickRemoveButton(product);
   }
 
   /**
    * Add multiple products to cart
-   * @param productNames product name strings array
+   * @param product product objects array
    */
-  addProductsToCart(productNames: string[]) {
-    for (const productName of productNames) {
-      console.log(`Adding product to cart: ${productName}`);
-      this.addProductToCart(productName);
+  addProductsToCart(products: Product[]) {
+    for (const product of products) {
+      this.addProductToCart(product);
     }
   }
 
   /**
    * Remove multiple products from cart
-   * @param productNames product name strings array
+   * @param product product objects array
    */
-  async removeProductsFromCart(productNames: string[]) {
-    for (const productName of productNames) {
-      console.log(`Removing product from cart: ${productName}`);
-      await this.removeProductFromCart(productName);
+  async removeProductsFromCart(products: Product[]) {
+    for (const product of products) {
+      console.log(`Removing product from cart: ${product.Name}`);
+      await this.removeProductFromCart(product);
     }
   }
 

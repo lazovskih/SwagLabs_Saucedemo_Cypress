@@ -10,6 +10,8 @@ export class CheckoutStepOnePage extends BasePage {
     locator: '[data-test="title"]',
     text: "Checkout: Your Information",
   };
+
+  // Checkout page elements - Step One (Your Information)
   readonly firstNameField = { fieldName: "firstname", locator: '[data-test="firstName"]' };
   readonly lastNameField = { fieldName: "lastname", locator: '[data-test="lastName"]' };
   readonly postalCodeField = { fieldName: "postal code", locator: '[data-test="postalCode"]' };

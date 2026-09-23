@@ -6,7 +6,7 @@ A demo end-to-end test automation project for the [SauceDemo](https://www.sauced
 
 ## 📹 Video Recording
 
-> 🎬 **Watch the test execution demo on YouTube:** [https://youtu.be/xxxxxx](https://youtu.be/xxxxx)
+> 🎬 **Watch the test execution demo on YouTube:** [https://youtu.be/wmittVoNeg8](https://youtu.be/wmittVoNeg8)
 
 ---
 
@@ -22,12 +22,12 @@ The tests are written using the **Page Object Model (POM)** pattern for maintain
 
 ### Tech Stack
 
-| Tool                           | Version           |
-| ------------------------------ | ----------------- |
-| [Cypress](https://cypress.io/) | ^16.1.0           |
-| TypeScript                     | via `@types/node` |
-| Node.js                        | LTS               |
-| dotenv                         | ^17.2.2           |
+| Tool                           | Version |
+| ------------------------------ | ------- |
+| [Cypress](https://cypress.io/) | ^16.1.0 |
+| TypeScript                     | ^7.0.2  |
+| Node.js                        | LTS     |
+| dotenv                         | ^17.2.2 |
 
 ### CI/CD
 
@@ -69,12 +69,16 @@ cp .env.example .env   # if an example file is available, otherwise create manua
 Add your credentials to `.env`:
 
 ```env
-STANDARD_USER=set_username
-DEMO_PASSWORD=set_password
+STANDARD_USER=standard_user
+DEMO_PASSWORD=secret_sauce
 URL=https://www.saucedemo.com
+CYPRESS_RECORD_KEY=your_cypress_record_key
+CYPRESS_PROJECT_ID=your_cypress_project_id
+GIT_TOKEN=your_github_token
 ```
 
 > ⚠️ **Never commit your `.env` file.** It is already listed in `.gitignore`.
+> `CYPRESS_RECORD_KEY`, `CYPRESS_PROJECT_ID`, and `GIT_TOKEN` are required only for CI or Cypress Cloud recording. Store them as GitHub Actions secrets in the `TEST` environment.
 
 ---
 
@@ -83,7 +87,7 @@ URL=https://www.saucedemo.com
 ### Run all tests (headless)
 
 ```bash
-npx cypress run
+npm run cy:run
 ```
 
 ### Run tests in headed mode (browser visible)
@@ -111,11 +115,9 @@ npx cypress run --spec "cypress/e2e/cart.cy.ts"
 
 ### Run tests on a specific browser
 
-# Run in Chrome
-
 ```bash
-npx cypress run --browser chrome
-npx cypress run --browser firefox
+npm run cy:run:chrome
+npm run cy:run:firefox
 npx cypress run --browser edge
 ```
 
@@ -124,24 +126,47 @@ npx cypress run --browser edge
 ## 📁 Project Structure
 
 ```
-sauselabsdemo/
+SwagLabs_Saucedemo_Cypress/
 ├── .github/
 │   └── workflows/
-│       └── cypress.yml      # GitHub Actions CI workflow
-├── e2e/
-│   │   ├── cart.cy.ts       # Cart tests
-│   │   └── checkout.cy.ts   # Checkout flow tests
-│   └─── pages/              # Page Object Model classes
-│       ├── BasePage.ts
-│       ├── CartPage.ts
-│       ├── CheckoutPage.ts
-│       ├── LoginPage.ts
-│       └── ProductsPage.ts
-├── cypress.config.ts         # Configuration
-├── package.json
-├── .env             # Local environment variables (not committed)
-├── .env.example     # Environment variables template
-└── README.md
+│       └── cypress.yml                    # GitHub Actions workflow
+├── .auth/
+│   └── user.json                          # Cypress session state
+├── cypress/
+│   ├── e2e/
+│   │   ├── 1_LoginPage.cy.ts              # Login and logout tests
+│   │   ├── 2_ShoppingCartBehavior.cy.ts   # Shopping cart tests
+│   │   └── 3_CheckoutFlow.cy.ts           # Checkout tests
+│   ├── fixtures/
+│   │   ├── products.json                  # Product test data
+│   │   └── shipping.json                  # Shipping test data
+│   ├── pages/                             # Page Object Model classes
+│   │   ├── BasePage.ts
+│   │   ├── CartPage.ts
+│   │   ├── CheckoutCompletePage.ts
+│   │   ├── CheckoutStepOnePage.ts
+│   │   ├── CheckoutStepTwoPage.ts
+│   │   ├── LoginPage.ts
+│   │   └── ProductsPage.ts
+│   ├── support/
+│   │   ├── commands.ts                    # Custom Cypress commands
+│   │   ├── e2e.ts                         # E2E support entry point
+│   │   ├── index.d.ts                     # Cypress global declarations
+│   │   └── types/
+│   │       ├── commands.d.ts              # Custom command types
+│   │       ├── env.d.ts                   # Cypress environment types
+│   │       └── product.d.ts                # Product interface
+│   └── utilities/
+│       ├── dataTypes.ts                   # Shared data interfaces
+│       └── formatters.ts                  # Currency parsing utilities
+├── .env.example                           # Environment variable template
+├── .gitignore                             # Ignored local and generated files
+├── cypress.config.js                      # Cypress configuration
+├── package.json                           # Scripts and dependencies
+├── package-lock.json                      # Locked dependency versions
+├── tsconfig.json                          # TypeScript compiler settings
+├── LICENSE                                # MIT license
+└── README.md                              # Project documentation
 ```
 
 ---

@@ -9,10 +9,10 @@ export class LoginPage extends BasePage {
 
   // Page elements
   readonly usernameField = { fieldName: "Username", locator: '[data-test="username"]' };
-  readonly passwordField = { fieldName: "password", locator: '[data-test="password"]' };
-  readonly loginButton = { fieldName: "login-button", locator: '[data-test="login-button"]' };
-  readonly errorMessage = { fieldName: "error", locator: '[data-test="error"]' };
-  readonly primaryHeader = { fieldName: "primary-header", locator: "div.login_logo" };
+  readonly passwordField = { fieldName: "Password", locator: '[data-test="password"]' };
+  readonly loginButton = { fieldName: "Login button", locator: '[data-test="login-button"]' };
+  readonly errorMessage = { fieldName: "Error message", locator: '[data-test="error"]' };
+  readonly primaryHeader = { fieldName: "Primary header", locator: "div.login_logo" };
 
   readonly errorMessageText = "Epic sadface: Username and password do not match any user in this service";
   readonly noAccessMessageText = "Epic sadface: You can only access '/inventory.html' when you are logged in.";
@@ -39,8 +39,8 @@ export class LoginPage extends BasePage {
    */
   login(username: string, password: string) {
     this.open();
-    cy.get(this.usernameField.locator).clear().type(username);
-    cy.get(this.passwordField.locator).clear().type(password);
+    cy.get(this.usernameField.locator).clear().type(username, { log: false });
+    cy.get(this.passwordField.locator).clear().type(password, { log: false });
     cy.get(this.loginButton.locator).click();
     cy.get('[data-test="inventory-item"]').first().should("be.visible");
   }

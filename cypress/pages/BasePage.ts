@@ -1,15 +1,15 @@
+import { Product } from "../support/types/product";
+
 export abstract class BasePage {
   abstract pageUrl: string;
-  readonly pageTitle = { fieldName: "page-title", locator: '[data-test="title"]', text: "" };
+  abstract primaryHeader: { fieldName: string; locator: string };
 
+  readonly pageTitle = { fieldName: "page-title", locator: '[data-test="title"]', text: "" };
   private readonly mainMenuButton = { fieldName: "main-menu-button", locator: "#react-burger-menu-btn" };
   private readonly sideMenu = { fieldName: "side-menu", locator: ".bm-menu" };
-
   private readonly allItemsMenu = { fieldName: "all-items-menu", locator: '[data-test="inventory-sidebar-link"]' };
   private readonly AboutMenu = { fieldName: "about-menu", locator: '[data-test="about-sidebar-link"]' };
   private readonly logoutMenu = { fieldName: "logout-menu", locator: "#logout_sidebar_link" };
-
-  abstract primaryHeader: { fieldName: string; locator: string };
 
   constructor() {}
 
@@ -75,10 +75,10 @@ export abstract class BasePage {
 
   /**
    * Get product ID
-   * @param productName
+   * @param product product object
    * @returns Promise<string>
    */
-  getProductId(productName: string) {
-    return productName.toLowerCase().replace(/\s+/g, "-");
+  getProductId(product: Product) {
+    return product.Name.toLowerCase().replace(/\s+/g, "-");
   }
 }
