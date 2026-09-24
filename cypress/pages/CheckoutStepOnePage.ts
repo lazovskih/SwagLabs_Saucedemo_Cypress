@@ -1,5 +1,5 @@
 import { BasePage } from "./BasePage";
-import { ShippingData } from "../utilities/dataTypes";
+import { Shipping } from "../support/types/Shipping";
 
 export class CheckoutStepOnePage extends BasePage {
   pageUrl = "/checkout-step-one.html";
@@ -30,11 +30,10 @@ export class CheckoutStepOnePage extends BasePage {
    * @param lastName
    * @param postalCode
    */
-  async fillShippingInformation(shippingData: ShippingData) {
+  async fillShippingInformation(shippingData: Shipping) {
     cy.get(this.firstNameField.locator).type(shippingData.FirstName);
     cy.get(this.lastNameField.locator).type(shippingData.LastName);
     cy.get(this.postalCodeField.locator).type(shippingData.PostalCode);
-    cy.get(this.continueButton.locator).click();
   }
 
   /**

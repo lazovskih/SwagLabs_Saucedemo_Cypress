@@ -155,9 +155,9 @@ SwagLabs_Saucedemo_Cypress/
 │   │   └── types/
 │   │       ├── commands.d.ts              # Custom command types
 │   │       ├── env.d.ts                   # Cypress environment types
-│   │       └── product.d.ts                # Product interface
+│   │       ├── ShippingData               # Shippind data interface
+│   │       └── product.d.ts               # Product interface
 │   └── utilities/
-│       ├── dataTypes.ts                   # Shared data interfaces
 │       └── formatters.ts                  # Currency parsing utilities
 ├── .env.example                           # Environment variable template
 ├── .gitignore                             # Ignored local and generated files
