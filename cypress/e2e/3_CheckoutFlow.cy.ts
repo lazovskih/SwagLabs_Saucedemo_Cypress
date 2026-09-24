@@ -60,6 +60,8 @@ describe("Checkout flow", () => {
 
     // Fill shipping information and continue to overview page
     checkoutStepOnePage.fillShippingInformation(shippingInfo[0]!);
+    checkoutStepOnePage.clickContinue();
+
     checkoutStepTwoPage.getPageTitle().then((title) => {
       expect(title, "Checkout page two page title").to.equal(checkoutStepTwoPage.pageTitle.text);
     });
@@ -113,6 +115,7 @@ describe("Checkout flow", () => {
 
     // Fill shipping information and continue to overview page
     checkoutStepOnePage.fillShippingInformation(shippingInfo[0]!);
+    checkoutStepOnePage.clickContinue();
 
     // Verify checkout step two page title
     checkoutStepTwoPage.getPageTitle().then((title) => {
