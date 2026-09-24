@@ -84,7 +84,6 @@ export class ProductsPage extends BasePage {
    */
   async removeProductsFromCart(products: Product[]) {
     for (const product of products) {
-      console.log(`Removing product from cart: ${product.Name}`);
       await this.removeProductFromCart(product);
     }
   }
