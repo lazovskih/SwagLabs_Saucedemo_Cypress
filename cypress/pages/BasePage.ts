@@ -11,7 +11,7 @@ export abstract class BasePage {
   private readonly AboutMenu = { fieldName: "about-menu", locator: '[data-test="about-sidebar-link"]' };
   private readonly logoutMenu = { fieldName: "logout-menu", locator: "#logout_sidebar_link" };
 
-  constructor() {}
+  constructor() { }
 
   /**
    * Wait for a page to open and verify that it is ready.
@@ -50,17 +50,9 @@ export abstract class BasePage {
   }
 
   /**
-   * Get current URL
-   * @returns Promise<string>
-   */
-  getCurrentUrl(): Cypress.Chainable<string> {
-    return cy.url();
-  }
-
-  /**
    * Click on menu button
    */
-  async clickMenuButton(): Promise<void> {
+  clickMenuButton() {
     cy.get(this.mainMenuButton.locator).click();
     cy.get(this.sideMenu.locator).should("be.visible");
   }
@@ -68,7 +60,7 @@ export abstract class BasePage {
   /**
    * Click on "Logout" menu link
    */
-  async clickLogoutMenu(): Promise<void> {
+  clickLogoutMenu() {
     this.clickMenuButton();
     cy.get(this.logoutMenu.locator).click();
   }

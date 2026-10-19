@@ -1,15 +1,14 @@
-/// <reference types="cypress" />
 import { LoginPage } from "../pages/LoginPage";
 import { ProductsPage } from "../pages/ProductsPage";
 
-describe("Login page tests", () => {
+describe("1. Login page tests", () => {
   /**
    * Login Test Scenarios for SauceDemo
    */
   let loginPage: LoginPage;
   let productsPage: ProductsPage;
 
-  beforeEach("Login page", () => {
+  beforeEach("1. Login page tests", () => {
     loginPage = new LoginPage();
     productsPage = new ProductsPage();
 
@@ -21,7 +20,7 @@ describe("Login page tests", () => {
    * Scenario 1: Login as standard user with valid password - successful
    * Verify "Products" page opened
    */
-  it("Login with valid credentials - successful", () => {
+  it("1.1 Login with valid credentials - successful", () => {
     // Login with valid credentials
     cy.env(["USERNAME", "PASSWORD"]).then((env) => {
       const { USERNAME, PASSWORD } = env;
@@ -31,7 +30,7 @@ describe("Login page tests", () => {
       loginPage.login(USERNAME, PASSWORD);
 
       // Verify Products page is displayed
-      productsPage.getCurrentUrl().should("contain", productsPage.pageUrl);
+      cy.url().should("contain", productsPage.pageUrl);
       productsPage.getPageTitle().should("equal", productsPage.pageTitleText);
     });
   });
@@ -40,7 +39,7 @@ describe("Login page tests", () => {
    * Scenario 2: Login as standard user with invalid password - unsuccessful
    * Verify error message displayed
    */
-  it("Login with invalid password - unsuccessful", () => {
+  it("1.2 Login with invalid password - unsuccessful", () => {
     // Login with invalid password
     cy.env(["USERNAME", "PASSWORD"]).then((env) => {
       const { USERNAME, PASSWORD } = env;
@@ -57,14 +56,14 @@ describe("Login page tests", () => {
       loginPage.getErrorMessageText().should("equal", loginPage.errorMessageText);
 
       // Verify still on login page
-      productsPage.getCurrentUrl().should("match", /.*\/$/);
+      cy.url().should("match", /.*\/$/);
     });
   });
 
   /**
    * Scenario 3: Login as standard user, logout, verify Products page not accessible
    */
-  it("Login, logout, verify Products page not accessible", () => {
+  it("1.3 Login, logout, verify Products page not accessible", () => {
     cy.env(["USERNAME", "PASSWORD", "BASEURL"]).then(({ USERNAME, PASSWORD, BASEURL }) => {
       if (typeof USERNAME !== "string" || typeof PASSWORD !== "string") {
         throw new Error("The Cypress USERNAME and PASSWORD environment variables must be configured.");
@@ -73,13 +72,13 @@ describe("Login page tests", () => {
       loginPage.login(USERNAME, PASSWORD);
 
       // Verify Products page is displayed
-      productsPage.getCurrentUrl().should("match", /.*inventory.html/);
+      cy.url().should("match", /.*inventory.html/);
 
       // Click logout
       productsPage.clickLogoutMenu();
 
       // Verify redirected to login page
-      productsPage.getCurrentUrl().should("match", /.*\/$/);
+      cy.url().should("match", /.*\/$/);
 
       // Try to navigate directly to Products page
       if (typeof BASEURL !== "string") {
@@ -88,7 +87,7 @@ describe("Login page tests", () => {
       cy.visit(BASEURL + productsPage.pageUrl, { failOnStatusCode: false });
 
       // Verify redirected back to login page (not accessible)
-      productsPage.getCurrentUrl().should("match", /.*\/$/);
+      cy.url().should("match", /.*\/$/);
     });
   });
 });

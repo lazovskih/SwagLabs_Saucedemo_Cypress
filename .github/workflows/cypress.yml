@@ -14,50 +14,32 @@ jobs:
         containers: [1, 2]
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
+
       - name: Cypress run
-        # Uses the official Cypress GitHub action https://github.com/cypress-io/github-action
+        # Uses official Cypress GitHub Action to install, cache, verify, and run tests
         uses: cypress-io/github-action@v7
         with:
-          # Records to Cypress Cloud
+          # Records to Cypress Cloud and runs in parallel across containers
           record: true
-          parallel: true # Runs test in parallel using settings above
+          parallel: true
         env:
           STANDARD_USER: ${{ secrets.STANDARD_USER }}
           DEMO_PASSWORD: ${{ secrets.DEMO_PASSWORD }}
           URL: ${{ vars.URL }}
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
           CYPRESS_PROJECT_ID: ${{ secrets.CYPRESS_PROJECT_ID }}
-          GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: lts/*
-          cache: npm
-      - name: Install dependencies
-        run: npm ci
-      - name: Cypress verify
-        run: npx cypress verify
-        env:
-          STANDARD_USER: ${{ secrets.STANDARD_USER }}
-          DEMO_PASSWORD: ${{ secrets.DEMO_PASSWORD }}
-          URL: ${{ vars.URL }}
-          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-          CYPRESS_PROJECT_ID: ${{ secrets.CYPRESS_PROJECT_ID }}
-          GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
-      - name: Run Cypress tests
-        run: npm run cy:run
-        env:
-          STANDARD_USER: ${{ secrets.STANDARD_USER }}
-          DEMO_PASSWORD: ${{ secrets.DEMO_PASSWORD }}
-          URL: ${{ vars.URL }}
+          GITHUB_TOKEN: ${{ secrets.GIT_TOKEN || secrets.GITHUB_TOKEN }}
+
       - name: Upload Cypress artifacts
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v4
         with:
-          name: cypress-artifacts
+          name: cypress-artifacts-${{ matrix.containers }}
           path: |
             cypress/screenshots
             cypress/videos
+            cypress/reports
           if-no-files-found: ignore
           retention-days: 10
+
