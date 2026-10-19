@@ -1,10 +1,13 @@
 name: Cypress Tests
+
 on:
   push:
   pull_request:
     branches: [main, master]
+
 jobs:
   cypress-run:
+    name: Cypress E2E (${{ matrix.containers }}/2)
     timeout-minutes: 10
     runs-on: ubuntu-latest
     environment: TEST
@@ -14,12 +17,13 @@ jobs:
         containers: [1, 2]
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
+
       - name: Cypress run
-        # Uses official Cypress GitHub Action to install, cache, verify, and run tests
+        # Official Cypress GitHub Action automatically installs dependencies,
+        # caches node_modules & Cypress binary, verifies Cypress, and executes tests.
         uses: cypress-io/github-action@v7
         with:
-          # Records to Cypress Cloud and runs in parallel across containers
           record: true
           parallel: true
         env:
@@ -28,29 +32,8 @@ jobs:
           URL: ${{ vars.URL }}
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
           CYPRESS_PROJECT_ID: ${{ secrets.CYPRESS_PROJECT_ID }}
-          GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: lts/*
-          cache: npm
-      - name: Install dependencies
-        run: npm ci
-      - name: Cypress verify
-        run: npx cypress verify
-        env:
-          STANDARD_USER: ${{ secrets.STANDARD_USER }}
-          DEMO_PASSWORD: ${{ secrets.DEMO_PASSWORD }}
-          URL: ${{ vars.URL }}
-          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-          CYPRESS_PROJECT_ID: ${{ secrets.CYPRESS_PROJECT_ID }}
-          GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
-      - name: Run Cypress tests
-        run: npm run cy:run
-        env:
-          STANDARD_USER: ${{ secrets.STANDARD_USER }}
-          DEMO_PASSWORD: ${{ secrets.DEMO_PASSWORD }}
-          URL: ${{ vars.URL }}
+          GITHUB_TOKEN: ${{ secrets.GIT_TOKEN || secrets.GITHUB_TOKEN }}
+
       - name: Upload Cypress artifacts
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v4
