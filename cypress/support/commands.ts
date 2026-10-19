@@ -8,7 +8,6 @@
 // https://on.cypress.io/custom-commands
 // ***********************************************
 //
-/// <reference types="cypress" />
 
 import { ProductsPage } from "../pages/ProductsPage";
 import { LoginPage } from "../pages/LoginPage";
@@ -23,7 +22,7 @@ Cypress.Commands.add("loginUI", (username?: string, password?: string): void => 
   if (!resolvedUsername || !resolvedPassword) {
     throw new Error(
       "[AUTH_CONFIG_ERROR]: Credentials must be provided explicitly as arguments " +
-        "or defined as 'USERNAME' and 'PASSWORD' in Cypress environment variables.",
+      "or defined as 'USERNAME' and 'PASSWORD' in Cypress environment variables.",
     );
   }
 
@@ -43,7 +42,7 @@ Cypress.Commands.add("loginUI", (username?: string, password?: string): void => 
       loginPage.login(resolvedUsername, resolvedPassword);
 
       // Verify that authentication completed successfully
-      productsPage.getCurrentUrl().should("include", productsPage.pageUrl);
+      cy.url().should("include", productsPage.pageUrl);
       productsPage.getPageTitle().should("equal", productsPage.pageTitleText);
     },
     sessionOptions,

@@ -30,7 +30,7 @@ export class CheckoutStepOnePage extends BasePage {
    * @param lastName
    * @param postalCode
    */
-  async fillShippingInformation(shippingData: Shipping) {
+  fillShippingInformation(shippingData: Shipping) {
     cy.get(this.firstNameField.locator).type(shippingData.FirstName);
     cy.get(this.lastNameField.locator).type(shippingData.LastName);
     cy.get(this.postalCodeField.locator).type(shippingData.PostalCode);
@@ -39,7 +39,7 @@ export class CheckoutStepOnePage extends BasePage {
   /**
    * Finish order
    */
-  async finishOrder() {
+  finishOrder() {
     cy.get(this.finishButton.locator).click();
   }
 
@@ -54,7 +54,7 @@ export class CheckoutStepOnePage extends BasePage {
   /**
    * Click continue
    */
-  async clickContinue() {
+  clickContinue() {
     cy.get(this.continueButton.locator).click();
   }
 }

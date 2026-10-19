@@ -21,7 +21,7 @@ export class ProductsPage extends BasePage {
    * @param product object
    * @returns Promise<Locator>
    */
-  async clickAddToCartButton(product: Product) {
+  clickAddToCartButton(product: Product) {
     cy.get(`[data-test="add-to-cart-${this.getProductId(product)}"]`).click();
   }
 
@@ -30,7 +30,7 @@ export class ProductsPage extends BasePage {
    * @param product object
    * @returns Promise<Locator>
    */
-  async clickRemoveButton(product: Product) {
+  clickRemoveButton(product: Product) {
     cy.get(`[data-test="remove-${this.getProductId(product)}"]`).click();
   }
 
@@ -64,7 +64,7 @@ export class ProductsPage extends BasePage {
    * Remove product from cart
    * @param product product object
    */
-  async removeProductFromCart(product: Product) {
+  removeProductFromCart(product: Product) {
     this.clickRemoveButton(product);
   }
 
@@ -82,9 +82,9 @@ export class ProductsPage extends BasePage {
    * Remove multiple products from cart
    * @param product product objects array
    */
-  async removeProductsFromCart(products: Product[]) {
+  removeProductsFromCart(products: Product[]) {
     for (const product of products) {
-      await this.removeProductFromCart(product);
+      this.removeProductFromCart(product);
     }
   }
 
@@ -104,7 +104,7 @@ export class ProductsPage extends BasePage {
   /**
    * View cart
    */
-  async viewCart() {
+  viewCart() {
     cy.get(this.shoppingCartLink.locator).click();
   }
 }

@@ -56,14 +56,14 @@ export class CheckoutStepTwoPage extends BasePage {
   /**
    * Click finish button
    */
-  async clickFinish() {
+  clickFinish() {
     cy.get(this.finishButton.locator).click();
   }
 
   /**
    * Finish the order by clicking the finish button
    */
-  async finishOrder() {
+  finishOrder() {
     cy.get(this.finishButton.locator).click();
   }
 }

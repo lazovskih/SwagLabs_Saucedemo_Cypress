@@ -1,6 +1,9 @@
-# Playwright
+# Cypress artifacts
 node_modules/
 /cypress/screenshots/
+/cypress/videos/
+/cypress/downloads/
+/cypress/reports/
 
 # Environment variables
 .env

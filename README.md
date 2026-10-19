@@ -109,8 +109,9 @@ npx cypress open
 ### Run a specific test file
 
 ```bash
-npx cypress run --spec "cypress/e2e/checkout.cy.ts"
-npx cypress run --spec "cypress/e2e/cart.cy.ts"
+npx cypress run --spec "cypress/e2e/1_LoginPage.cy.ts"
+npx cypress run --spec "cypress/e2e/2_ShoppingCartBehavior.cy.ts"
+npx cypress run --spec "cypress/e2e/3_CheckoutFlow.cy.ts"
 ```
 
 ### Run tests on a specific browser
@@ -120,6 +121,16 @@ npm run cy:run:chrome
 npm run cy:run:firefox
 npx cypress run --browser edge
 ```
+
+### 📊 HTML Test Reports
+
+After running tests via `npm run cy:run`, a standalone HTML report with embedded metrics, charts, and failure screenshots is generated at:
+
+```
+cypress/reports/html/index.html
+```
+
+In GitHub Actions CI, this report is automatically archived and available for download under the workflow run's artifacts.
 
 ---
 

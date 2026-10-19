@@ -15,3 +15,6 @@
 
 // Import custom commands
 import "./commands";
+
+// Register mochawesome reporter for embedded screenshots and test logs
+import "cypress-mochawesome-reporter/register";

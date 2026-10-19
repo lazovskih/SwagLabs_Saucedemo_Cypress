@@ -1,5 +1,3 @@
-/// <reference types="cypress" />
-
 import { ProductsPage } from "../pages/ProductsPage";
 import { CartPage } from "../pages/CartPage";
 import { CheckoutStepOnePage } from "../pages/CheckoutStepOnePage";
@@ -12,14 +10,14 @@ import shippingInfo from "../fixtures/shipping.json";
 
 const products: Product[] = productsList;
 
-describe("Checkout flow", () => {
+describe("3. Checkout flow tests", () => {
   let productsPage: ProductsPage;
   let cartPage: CartPage;
   let checkoutStepOnePage: CheckoutStepOnePage;
   let checkoutStepTwoPage: CheckoutStepTwoPage;
   let checkoutCompletePage: CheckoutCompletePage;
 
-  beforeEach(() => {
+  beforeEach("3. Checkout flow tests", () => {
     // Login with valid credentials from .env or Environment variables on CI/CD
     cy.loginUI("standard_user", "secret_sauce").then(() => {
       productsPage = new ProductsPage();
@@ -34,7 +32,7 @@ describe("Checkout flow", () => {
     });
   });
 
-  it("Completes checkout for a selected product", () => {
+  it("3.1 Completes checkout for a selected product", () => {
     // Add multiple products to cart
     const selectedProducts: Product[] = [products[1]!, products[2]!, products[3]!];
 
@@ -89,7 +87,7 @@ describe("Checkout flow", () => {
       .and("have.text", checkoutCompletePage.generatePDForderButton.text);
   });
 
-  it("Completes checkout and verifies totals for multiple selected products", () => {
+  it("3.2 Completes checkout and verifies totals for multiple selected products", () => {
     // Add multiple products to cart
     const selectedProducts: Product[] = [products[1]!, products[2]!];
     productsPage.addProductsToCart(selectedProducts);
