@@ -6,8 +6,20 @@ on:
     branches: [main, master]
 
 jobs:
+  lint:
+    name: Lint & Static Analysis
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm ci
+      - run: npm run lint # Must return non-zero exit code on failure
+
   cypress-run:
     name: Cypress E2E (${{ matrix.containers }}/2)
+    needs: [lint]
     timeout-minutes: 10
     runs-on: ubuntu-latest
     environment: TEST
