@@ -26,11 +26,11 @@ export class LoginPage extends BasePage {
    * @returns
    */
   open() {
-    cy.env(["BASEURL"]).then((env): undefined => {
-      if (typeof env.BASEURL !== "string" || env.BASEURL.length === 0) {
-        throw new Error("The Cypress BASEURL environment variable must be configured.");
+    cy.env(["baseUrl"]).then((env): undefined => {
+      if (typeof env.baseUrl !== "string" || env.baseUrl.length === 0) {
+        throw new Error("The Cypress baseUrl environment variable must be configured.");
       }
-      cy.visit(env.BASEURL + this.pageUrl);
+      cy.visit(env.baseUrl + this.pageUrl);
     });
   }
 
@@ -49,12 +49,12 @@ export class LoginPage extends BasePage {
    * Login as locked out user.
    */
   loginAsLockedOutUser() {
-    return cy.env(["STANDARD_USER", "DEMO_PASSWORD"]).then(({ username, PASSWORD }) => {
-      if (typeof username !== "string" || typeof PASSWORD !== "string") {
-        throw new Error("The Cypress username and PASSWORD environment variables must be configured.");
+    return cy.env(["STANDARD_USER", "DEMO_PASSWORD"]).then(({ username, password }) => {
+      if (typeof username !== "string" || typeof password !== "string") {
+        throw new Error("The Cypress username and password environment variables must be configured.");
       }
 
-      return this.login(username, PASSWORD);
+      return this.login(username, password);
     });
   }
 

@@ -1,6 +1,6 @@
 export interface CustomCypressEnv {
-  USERNAME?: string;
-  PASSWORD?: string;
+  username?: string;
+  password?: string;
   BASE_URL?: string;
   [key: string]: unknown;
 }

@@ -18,11 +18,11 @@ export abstract class BasePage {
    * @returns
    */
   open() {
-    cy.env(["BASEURL"]).then((env): undefined => {
-      if (typeof env.BASEURL !== "string" || env.BASEURL.length === 0) {
-        throw new Error("The Cypress BASEURL environment variable must be configured.");
+    cy.env(["baseUrl"]).then((env): undefined => {
+      if (typeof env.baseUrl !== "string" || env.baseUrl.length === 0) {
+        throw new Error("The Cypress baseUrl environment variable must be configured.");
       }
-      cy.visit(env.BASEURL + this.pageUrl, { failOnStatusCode: false });
+      cy.visit(env.baseUrl + this.pageUrl, { failOnStatusCode: false });
 
       this.isLoaded();
     });

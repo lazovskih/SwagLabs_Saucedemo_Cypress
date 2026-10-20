@@ -11,7 +11,15 @@
     "cy:open:chrome": "npx cypress open --e2e --browser chrome",
     "cy:open:firefox": "npx cypress open --e2e --browser firefox",
     "cy:open:edge": "npx cypress open --e2e --browser edge",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "prepare": "husky",
+    "lint": "eslint . --max-warnings=0",
+    "lint:fix": "eslint . --fix"
+  },
+  "lint-staged": {
+    "*.{ts,mts,js,mjs}": [
+      "eslint --max-warnings=0"
+    ]
   },
   "repository": {
     "type": "git",
@@ -33,9 +41,16 @@
   },
   "homepage": "https://github.com/lazovskih/SwagLabs_Saucedemo_Cypress#readme",
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^26.6.5",
     "cypress": "^16.1.0",
     "cypress-mochawesome-reporter": "^5.0.0",
     "dotenv": "^17.2.2",
-    "typescript": "^7.0.2"
+    "eslint": "^10.13.0",
+    "eslint-plugin-cypress": "^7.0.2",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.6.0",
+    "typescript": "~5.8.0",
+    "typescript-eslint": "^8.72.0"
   }
 }
