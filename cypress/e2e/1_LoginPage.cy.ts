@@ -22,12 +22,12 @@ describe("1. Login page tests", () => {
    */
   it("1.1 Login with valid credentials - successful", () => {
     // Login with valid credentials
-    cy.env(["USERNAME", "PASSWORD"]).then((env) => {
-      const { USERNAME, PASSWORD } = env;
-      if (typeof USERNAME !== "string" || typeof PASSWORD !== "string") {
-        throw new Error("The Cypress username and PASSWORD environment variables must be configured.");
+    cy.env(["username", "password"]).then((env) => {
+      const { username, password } = env;
+      if (typeof username !== "string" || typeof password !== "string") {
+        throw new Error("The Cypress username and password environment variables must be configured.");
       }
-      loginPage.login(USERNAME, PASSWORD);
+      loginPage.login(username, password);
 
       // Verify Products page is displayed
       cy.url().should("contain", productsPage.pageUrl);
@@ -41,13 +41,13 @@ describe("1. Login page tests", () => {
    */
   it("1.2 Login with invalid password - unsuccessful", () => {
     // Login with invalid password
-    cy.env(["USERNAME", "PASSWORD"]).then((env) => {
-      const { USERNAME, PASSWORD } = env;
-      if (typeof USERNAME !== "string") {
-        throw new Error("The Cypress USERNAME environment variable must be configured.");
+    cy.env(["username", "password"]).then((env) => {
+      const { username, password } = env;
+      if (typeof username !== "string") {
+        throw new Error("The Cypress username environment variable must be configured.");
       }
 
-      cy.get(loginPage.usernameField.locator).clear().type(USERNAME);
+      cy.get(loginPage.usernameField.locator).clear().type(username);
       cy.get(loginPage.passwordField.locator).clear().type("invalid_password");
       cy.get(loginPage.loginButton.locator).click();
 
@@ -64,12 +64,12 @@ describe("1. Login page tests", () => {
    * Scenario 3: Login as standard user, logout, verify Products page not accessible
    */
   it("1.3 Login, logout, verify Products page not accessible", () => {
-    cy.env(["USERNAME", "PASSWORD", "BASEURL"]).then(({ USERNAME, PASSWORD, BASEURL }) => {
-      if (typeof USERNAME !== "string" || typeof PASSWORD !== "string") {
-        throw new Error("The Cypress USERNAME and PASSWORD environment variables must be configured.");
+    cy.env(["username", "password", "baseUrl"]).then(({ username, password, baseUrl }) => {
+      if (typeof username !== "string" || typeof password !== "string") {
+        throw new Error("The Cypress username and password environment variables must be configured.");
       }
       // Login with valid credentials
-      loginPage.login(USERNAME, PASSWORD);
+      loginPage.login(username, password);
 
       // Verify Products page is displayed
       cy.url().should("match", /.*inventory.html/);
@@ -81,10 +81,10 @@ describe("1. Login page tests", () => {
       cy.url().should("match", /.*\/$/);
 
       // Try to navigate directly to Products page
-      if (typeof BASEURL !== "string") {
-        throw new Error("The Cypress BASEURL environment variable must be configured.");
+      if (typeof baseUrl !== "string") {
+        throw new Error("The Cypress baseUrl environment variable must be configured.");
       }
-      cy.visit(BASEURL + productsPage.pageUrl, { failOnStatusCode: false });
+      cy.visit(baseUrl + productsPage.pageUrl, { failOnStatusCode: false });
 
       // Verify redirected back to login page (not accessible)
       cy.url().should("match", /.*\/$/);

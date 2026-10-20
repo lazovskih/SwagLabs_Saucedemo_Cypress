@@ -42,6 +42,7 @@
   "homepage": "https://github.com/lazovskih/SwagLabs_Saucedemo_Cypress#readme",
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@types/node": "^26.6.5",
     "cypress": "^16.1.0",
     "cypress-mochawesome-reporter": "^5.0.0",
     "dotenv": "^17.2.2",

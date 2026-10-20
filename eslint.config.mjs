@@ -9,7 +9,7 @@ export default tseslint.config(
 
   // 2. Cypress & TypeScript test specs
   {
-    files: ['cypress/**/*.ts', '**/*.cy.ts'],
+    files: ['cypress/**/*.ts', '**/*.cy.ts','cypress.config.ts'],
     languageOptions: {
       parser: tseslint.parser,
       parserOptions: {

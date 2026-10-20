@@ -16,13 +16,13 @@ Cypress.Commands.add("loginUI", (username?: string, password?: string): void => 
   const productsPage = new ProductsPage();
 
   // 1. Resolve credentials with fallbacks from typed Cypress.env
-  const resolvedUsername = username ?? Cypress.env("USERNAME");
-  const resolvedPassword = password ?? Cypress.env("PASSWORD");
+  const resolvedUsername = username ?? Cypress.env("username");
+  const resolvedPassword = password ?? Cypress.env("password");
 
   if (!resolvedUsername || !resolvedPassword) {
     throw new Error(
       "[AUTH_CONFIG_ERROR]: Credentials must be provided explicitly as arguments " +
-      "or defined as 'USERNAME' and 'PASSWORD' in Cypress environment variables.",
+      "or defined as 'username' and 'password' in Cypress environment variables.",
     );
   }
 

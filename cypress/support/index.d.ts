@@ -7,8 +7,8 @@ declare global {
        * Authenticates a user via UI within a cached `cy.session()`, then navigates
        * directly to the Products Page.
        *
-       * @param username - Optional username. Falls back to Cypress.env('USERNAME').
-       * @param password - Optional password. Falls back to Cypress.env('PASSWORD').
+       * @param username - Optional username. Falls back to Cypress.env('username').
+       * @param password - Optional password. Falls back to Cypress.env('password').
        *
        * @example
        * cy.loginUI();
@@ -23,5 +23,4 @@ declare global {
     }
   }
 }
-
-export {};
+export { };
