@@ -6,15 +6,15 @@ export class ProductsPage extends BasePage {
   pageUrl = "/inventory.html";
 
   // Page elements
-  readonly inventoryItems = { fieldName: "inventory-item", locator: '[data-test="inventory-item"]' };
-  readonly cardBageHolder = { fieldName: "shopping-cart-badge", locator: '[data-test="shopping-cart-link"]' };
-  readonly cartBadge = { fieldName: "shopping-cart-badge", locator: '[data-test="shopping-cart-badge"]' };
-  readonly shoppingCartLink = { fieldName: "shopping-cart-link", locator: '[data-test="shopping-cart-link"]' };
+  readonly inventoryItems = { fieldName: "inventory item", locator: '[data-test="inventory-item"]' };
+  readonly cardBageHolder = { fieldName: "shopping cart badge", locator: '[data-test="shopping-cart-link"]' };
+  readonly cartBadge = { fieldName: "shopping cart badge", locator: '[data-test="shopping-cart-badge"]' };
+  readonly shoppingCartLink = { fieldName: "shopping cart link", locator: '[data-test="shopping-cart-link"]' };
   readonly primaryHeader = { fieldName: "title", locator: '[data-test="title"]' };
+  readonly sortSelector = { fieldName: "sort selector", locator: '[data-test="product-sort-container"]' };
 
-  constructor() {
-    super();
-  }
+  readonly itemTitle = { fieldName: "inventory item title", locator: '[data-test="inventory-item-name"]' };
+  readonly itemPrice = { fieldName: "inventory item price", locator: '[data-test="inventory-item-price"]' };
 
   /**
    * Click add to cart button
