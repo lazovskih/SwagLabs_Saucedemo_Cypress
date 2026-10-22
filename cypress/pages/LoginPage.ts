@@ -1,4 +1,3 @@
-
 import { BasePage } from "./BasePage";
 
 export class LoginPage extends BasePage {
@@ -16,10 +15,6 @@ export class LoginPage extends BasePage {
 
   readonly errorMessageText = "Epic sadface: Username and password do not match any user in this service";
   readonly noAccessMessageText = "Epic sadface: You can only access '/inventory.html' when you are logged in.";
-
-  constructor() {
-    super();
-  }
 
   /**
    * Wait for a page to open and verify that it is ready.
