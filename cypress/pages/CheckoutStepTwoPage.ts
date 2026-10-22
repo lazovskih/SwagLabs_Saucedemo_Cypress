@@ -16,10 +16,6 @@ export class CheckoutStepTwoPage extends BasePage {
   private readonly cancelLink = { fieldName: "cancel", locator: '[data-test="cancel"]' };
   readonly primaryHeader = { fieldName: "primary-header", locator: '[data-test="title"]' };
 
-  constructor() {
-    super();
-  }
-
   /**
    * Retrieves the Subtotal amount as a parsed number.
    * @returns total as number

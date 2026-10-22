@@ -36,10 +36,6 @@ export class CheckoutCompletePage extends BasePage {
   private readonly completeText = { fieldName: "complete-text", locator: '[data-test="complete-text"]' };
   private readonly backHomeButton = { fieldName: "back-home", locator: '[data-test="back-home"]' };
 
-  constructor() {
-    super();
-  }
-
   /**
    * Get complete text
    * @returns string
