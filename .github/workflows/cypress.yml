@@ -38,6 +38,7 @@ jobs:
         uses: cypress-io/github-action@v7
         with:
           browser: ${{ matrix.browser }}
+          group: ${{ matrix.browser }}
           record: true
         env:
           STANDARD_USER: ${{ secrets.STANDARD_USER }}
