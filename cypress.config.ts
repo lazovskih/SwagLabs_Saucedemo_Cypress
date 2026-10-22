@@ -3,7 +3,7 @@ import { defineConfig } from 'cypress';
 import mochawesomeReporter from 'cypress-mochawesome-reporter/plugin';
 
 export default defineConfig({
-  projectId: 'pttokf',
+  projectId: process.env.CYPRESS_PROJECT_ID,
   reporter: 'cypress-mochawesome-reporter',
   reporterOptions: {
     charts: true,
@@ -11,6 +11,7 @@ export default defineConfig({
     embeddedScreenshots: true,
     inlineAssets: true,
     saveAllAttempts: false,
+    reportDir: process.env.CYPRESS_REPORT_DIR || 'cypress/reports/html',
   },
   e2e: {
     baseUrl: process.env.URL,

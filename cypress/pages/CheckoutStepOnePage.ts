@@ -20,10 +20,6 @@ export class CheckoutStepOnePage extends BasePage {
   readonly completeHeader = { fieldName: "complete header", locator: '[data-test="complete-header"]' };
   readonly primaryHeader = { fieldName: "primary header", locator: '[data-test="title"]' };
 
-  constructor() {
-    super();
-  }
-
   /**
    * Fill shipping information
    * @param firstName

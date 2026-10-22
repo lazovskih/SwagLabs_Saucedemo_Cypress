@@ -13,10 +13,6 @@ export class CartPage extends BasePage {
   readonly continueShoppingButton = { fieldName: "continue-shopping-button", locator: '[data-test="continue-shopping"]' };
   readonly primaryHeader = { fieldName: "primary-header", locator: '[data-test="title"]' };
 
-  constructor() {
-    super();
-  }
-
   /**
    * Get product count
    * @param product object

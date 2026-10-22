@@ -31,7 +31,7 @@ The tests are written using the **Page Object Model (POM)** pattern for maintain
 
 ### CI/CD
 
-Tests are automatically executed on every push and pull request to the `main` / `master` branch via **GitHub Actions**. Test credentials are stored securely as GitHub Secrets in the `TEST` environment.
+Tests are automatically executed on every push and pull request via **GitHub Actions**. The Cypress workflow starts three concurrent jobs, one each for Chrome, Firefox, and Edge; every job runs the complete test suite in its browser. Test credentials are stored securely as GitHub Secrets in the `TEST` environment.
 
 ---
 
@@ -84,10 +84,28 @@ GIT_TOKEN=your_github_token
 
 ## ▶️ Running Tests
 
-### Run all tests (headless)
+### Run all tests in parallel across 3 browsers (Chrome, Firefox, Edge)
+
+Runs tests simultaneously across all 3 browsers using `concurrently` (just like Playwright):
+
+```bash
+npm run cy:run:all
+# or
+npm run cy:run:parallel
+```
+
+### Run all tests in default browser (headless)
 
 ```bash
 npm run cy:run
+```
+
+### Run tests on a specific browser
+
+```bash
+npm run cy:run:chrome
+npm run cy:run:firefox
+npm run cy:run:edge
 ```
 
 ### Run tests in headed mode (browser visible)
@@ -112,25 +130,18 @@ npx cypress open
 npx cypress run --spec "cypress/e2e/1_LoginPage.cy.ts"
 npx cypress run --spec "cypress/e2e/2_ShoppingCartBehavior.cy.ts"
 npx cypress run --spec "cypress/e2e/3_CheckoutFlow.cy.ts"
-```
-
-### Run tests on a specific browser
-
-```bash
-npm run cy:run:chrome
-npm run cy:run:firefox
-npx cypress run --browser edge
+npx cypress run --spec "cypress/e2e/4_SortingProducts.cy.ts"
 ```
 
 ### 📊 HTML Test Reports
 
-After running tests via `npm run cy:run`, a standalone HTML report with embedded metrics, charts, and failure screenshots is generated at:
+- Default single run report: `cypress/reports/html/index.html`
+- Local multi-browser parallel run reports:
+  - Chrome: `cypress/reports/chrome/index.html`
+  - Firefox: `cypress/reports/firefox/index.html`
+  - Edge: `cypress/reports/edge/index.html`
 
-```
-cypress/reports/html/index.html
-```
-
-In GitHub Actions CI, this report is automatically archived and available for download under the workflow run's artifacts.
+In GitHub Actions, reports, screenshots, and videos are uploaded as separate browser-specific artifacts (`cypress-artifacts-chrome`, `cypress-artifacts-firefox`, and `cypress-artifacts-edge`) after each run.
 
 ---
 
@@ -147,7 +158,8 @@ SwagLabs_Saucedemo_Cypress/
 │   ├── e2e/
 │   │   ├── 1_LoginPage.cy.ts              # Login and logout tests
 │   │   ├── 2_ShoppingCartBehavior.cy.ts   # Shopping cart tests
-│   │   └── 3_CheckoutFlow.cy.ts           # Checkout tests
+│   │   ├── 3_CheckoutFlow.cy.ts           # Checkout tests
+│   │   └── 4_SortingProducts.cy.ts        # Product sorting tests
 │   ├── fixtures/
 │   │   ├── products.json                  # Product test data
 │   │   └── shipping.json                  # Shipping test data
@@ -166,13 +178,14 @@ SwagLabs_Saucedemo_Cypress/
 │   │   └── types/
 │   │       ├── commands.d.ts              # Custom command types
 │   │       ├── env.d.ts                   # Cypress environment types
-│   │       ├── ShippingData               # Shippind data interface
+│   │       ├── Shipping.ts                # Shipping data interface
 │   │       └── product.d.ts               # Product interface
 │   └── utilities/
 │       └── formatters.ts                  # Currency parsing utilities
 ├── .env.example                           # Environment variable template
 ├── .gitignore                             # Ignored local and generated files
-├── cypress.config.js                      # Cypress configuration
+├── cypress.config.ts                      # Cypress configuration
+├── eslint.config.mjs                      # ESLint configuration
 ├── package.json                           # Scripts and dependencies
 ├── package-lock.json                      # Locked dependency versions
 ├── tsconfig.json                          # TypeScript compiler settings

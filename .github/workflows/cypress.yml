@@ -18,15 +18,16 @@ jobs:
       - run: npm run lint # Must return non-zero exit code on failure
 
   cypress-run:
-    name: Cypress E2E (${{ matrix.containers }}/2)
+    name: Cypress E2E (${{ matrix.browser }})
     needs: [lint]
     timeout-minutes: 10
     runs-on: ubuntu-latest
     environment: TEST
     strategy:
       fail-fast: false
+      max-parallel: 3
       matrix:
-        containers: [1, 2]
+        browser: [chrome, firefox, edge]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -36,8 +37,9 @@ jobs:
         # caches node_modules & Cypress binary, verifies Cypress, and executes tests.
         uses: cypress-io/github-action@v7
         with:
+          browser: ${{ matrix.browser }}
+          group: ${{ matrix.browser }}
           record: true
-          parallel: true
         env:
           STANDARD_USER: ${{ secrets.STANDARD_USER }}
           DEMO_PASSWORD: ${{ secrets.DEMO_PASSWORD }}
@@ -50,7 +52,7 @@ jobs:
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v4
         with:
-          name: cypress-artifacts-${{ matrix.containers }}
+          name: cypress-artifacts-${{ matrix.browser }}
           path: |
             cypress/screenshots
             cypress/videos
